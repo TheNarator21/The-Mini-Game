@@ -1,0 +1,656 @@
+import random
+Time = [0, 0] # Day, Tick
+
+Skills = {
+    "Skill": [0, 1650], # Level is automatically calculated per instance. Starting XP needs to be manually set before running. 
+    "Fishing": [0, 1100],
+    "Farming": [0, -50],
+    "Roll": [0,-50],
+    "Endurance": [0, -50],
+}
+
+def XPConversion(SkillName, Type):
+    while True:
+        L = 0
+        XPRequired = 0
+        Skill = Skills[SkillName]
+        XP = Skill[1]
+        match (Type):
+            case "Display": 
+                SkillName = input("Enter Skill Name:\n> ").title().strip()
+                Type = input("Enter Skill Type: (Combat, Magic, Proficiency, etc)\n> ").title().strip()
+                continue 
+            case "Testing":
+                Type = input("Enter Skill Type: (Combat, Magic, Proficiency, etc)\n> ").title().strip() 
+                continue
+
+            case "Combat" | "Physical": # Physical are combat-like, without the Max Cap. Ex: Roll & Endurance.
+                while XPRequired < (Skill[1] + 1):
+                    L += 1
+                    XPRequired += round((L**3 + L**2)/6 + (2*L) +3)
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            
+            case "Magic":
+                while XPRequired < (Skill[1] + 1):
+                    L += 1
+                    XPRequired += .5 * round((L**3 + L**2)/6 + (2*L) +3)
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+
+            case "Production":
+                while XPRequired < (Skill[1] + 1): # +10
+                    L += 1
+                    XPRequired += 10 * L 
+                    print(f"Level = {L}\n| XP Required = {XPRequired}")
+
+            case "Informational":
+                XPRequired = 5
+                while XPRequired < (Skill[1] + 1): # +5
+                    L += 1
+                    XPRequired += 5 * L 
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            
+            case "Social" | "Proficiency":
+                while XPRequired < (Skill[1] + 1): # +20
+                    L += 1
+                    XPRequired += 20 * L 
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            case _:
+                print("Unknown Typing")
+
+        if L >= 20:
+            if Type in ["Combat"]:
+                print("Max Level!")
+                L = 20
+                XPRequired = 8306
+            elif Type == "Production":
+                print("Max Level!")
+                L = 20
+                XPRequired = 2100
+        
+        if L >= 10:
+            if Type == "Proficiency":
+                print("Max Level!")
+                L = 10
+                XPRequired = 1100
+            elif Type == "Informational":
+                print("Max Level!")
+                L = 20
+                XPRequired = 280
+            elif Type == "Magic": 
+                print(f"Tier = {int(L/10) + 1}")
+            elif Type == "Social":
+                print("Max Level!")
+                L = 10
+                XPRequired = 1100
+
+        print(f"| {SkillName} Lv.{L} [{XP} / {XPRequired}]")
+        return L
+
+Inventory = {
+    "Beginners Rod": 1, 
+    "Stone Pickaxe": 1,
+    "Stone Dagger": 1,
+    "Stone Hoe": 1,
+    
+    "Leather Helmet": 1,
+    "Leather Chestplate": 1,
+    "Leather Leggings": 1,
+    "Leather Boots": 1,
+    }
+
+Assets = {
+    # Tools: 
+        "Beginners Rod": {
+            "Strength": 1, 
+            "Reel Time": 0.6,
+            "Treasure Chance": 0 ,
+            "Junk Chance": 10,
+            "Action Type": ["Main", "Side"], 
+        },
+
+        "Stone Pickaxe": {
+            "Strength": 2,
+            "Mining Speed": 1, 
+            "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Action Type": ["Main"], 
+        },
+
+        "Stone Dagger": {
+            "Strength": 3,
+            "Attack Speed": .5,
+            "Action Type": ["Main", "Side"],
+        },
+        
+        "Stone Hoe": {
+        "Strength": 0,
+        "Harvesting Speed": 2,
+        "Farming Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+        "Action Type": ["Main"], 
+        },
+
+    # Fish: 
+        "Fish": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+        },
+        
+        "Mud Guppy": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+        },
+        
+        "Minnow": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+        },
+        
+        "Salmon": {
+            "Strength": 5, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "UnCommon",
+        },
+
+
+
+    # Veinlings: 
+        "Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {},
+            "Grouping": [0, 0],
+        },
+        
+        "Iron Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Iron Chunk": [1, 3],
+            },  
+            "Grouping": [2, 8],
+        },
+
+        "Copper Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Copper Chunk": [3, 6],},  
+            "Grouping": [2, 6],
+        },
+
+        "Coal Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Coal": [3, 8],},
+            "Grouping": [3, 12],
+        },
+
+        "Steel Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Steel Chunk": [1, 2],},  
+            "Grouping": [1, 3],
+        },
+
+        "Diamond Veinling": {
+            "Strength": 1, 
+            "Defense": 1,
+            "Speed": 1,
+            "Skills": ["Defense 1"],
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Diamond": [1, 3],},
+            "Grouping": [1, 2],
+        },
+}
+
+
+def Search(Type, Search): # Type = Inventory / Skills
+    Result = []
+    for item in Type:
+        if item in Search:
+            Result.append(item)
+
+    return Result
+
+def Fishing(Time):
+    FishingRods = [
+        "Wooden Fishing Rod",
+        "Beginners Rod", 
+        "Stone Fishing Rod",
+    ]
+
+    FishingPool = [
+        "Mud Guppy", "Minnow", "Salmon"
+    ]
+
+    TreasurePool = {
+        "Iron Ingot": 1, 
+        "Iron Nugget": 3,
+    }
+    
+    JunkPool = {
+        "String": 3, 
+        "Wooden Bowl": 2,
+    }
+    
+    Fishing = True
+    Attempts = True 
+
+    while True:
+        # Fishing Skill Check
+        SkillCheck = Search(Skills, "Fishing")
+        
+        
+        if SkillCheck == []:
+            Skills["Fishing"] = [0, -50]
+            # Ex = Skills["Fishing"]
+            # print(f"Fishing Lv.{Ex[0]} [{Ex[1]}xp]")
+        
+        Skills["Fishing"][0] = XPConversion("Fishing", "Proficiency")
+        Strength = Skills["Fishing"][0]
+
+        # Fishing Rod Check
+        Options = Search(Inventory, FishingRods)
+        if Options == []: 
+            print("No Rod Present.")
+            continue
+
+        print("\nSelect a Rod:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        FishingRod = input("> ").title().strip()
+        if FishingRod == "Exit":
+            return
+        
+        if FishingRod not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+
+        Data = Assets[FishingRod] 
+
+        TChance = Data["Treasure Chance"]
+        JChance = Data["Junk Chance"]
+
+        Reels = {}
+        while Attempts: 
+            Roll = random.randint(1,100)
+            print("="*30 + "\nSomething catches the line!")
+            if Roll <= TChance: 
+                Treasures = []
+
+                for Treasure in TreasurePool:
+                    Treasures.append(Treasure) 
+                Catch = random.choice(Treasures)
+                print("Press [Enter] to Reel it in!")
+
+                Cont = input("> Reel")
+                print(f"You Reel in a {Catch}!")
+                Reels[Catch] = (Reels.get(Catch, 0) + 1)
+
+            elif Roll <= TChance + JChance: 
+                Junks = []
+
+                for Junk in JunkPool:
+                    Junks.append(Junk) 
+                Catch = random.choice(Junks)
+                print("Press [Enter] to Reel it in!")
+
+                Cont = input("> Reel")
+                print(f"You Reel in a {Catch}!")
+                Reels[Catch] = (Reels.get(Catch, 0) + 1)
+
+            else: 
+                Strength += Data["Strength"]
+                Fish = []
+                
+                for item in FishingPool:
+                    Fish.append(item) 
+
+                Catch = random.choice(Fish)
+                FishSTR = Assets[Catch]["Strength"]
+                FishingLevel = Skills["Fishing"]
+                
+                CRoll = random.randint(1, (10 + (5 * int(FishingLevel[0]/5)))) + min(FishingLevel[0], 10)
+                # print(f"DEBUG | Condition Roll = {CRoll}")
+                # print(f"{FishingLevel[0]}, {FishingLevel[1]}")
+                
+                if CRoll <= 10:
+                    Condition = "Damaged "
+                    FishSTR *= .5
+                elif CRoll < 26: 
+                    Condition = ""
+                elif CRoll >= 26: 
+                    Condition = "Healthy "
+                    FishSTR *= 1.5                
+                
+                SuccessChance = int((Strength*100) / (FishSTR + Strength)) # ex: 25% Success [76+]
+
+                Fishing = True 
+                while Fishing: 
+                    print(f"Press [Enter] to Reel it in!\n| %success: {SuccessChance} ({101 - SuccessChance}+)\n" + "-"*30)
+
+                    Cont = input("> Reel")
+
+                    Roll = random.randint(1,100) 
+                    if Roll > (101 - SuccessChance): 
+                        Catch = Condition + Catch
+                        print(f"You Reel in a {Catch}!")
+                        
+                        Reels[Catch] = (Reels.get(Catch, 0) + 1)
+                        Fishing = False
+                        
+                        XP = 1 
+                        Skills["Fishing"][1] += XP
+                        XPConversion("Fishing", "Proficiency")
+
+                        
+                    else: 
+                        if "Struggle" in Assets[Catch]["Skills"]: 
+                            print(f"> It Struggles... ({Roll})")
+                            Roll = random.randint(1,5)
+                            if Roll == 5: 
+                                print("| It Gets away!\n")
+                                Fishing = False 
+                            else:
+                                print("| Nothing Happens.\n")
+                
+            Time[1] += Data["Reel Time"] * 2
+
+            print("="*30)
+            DisplayTime(Time)
+            print("Catches:")
+                  
+            for Item in Reels:
+                Amount = Reels[Item]
+                print(f"| {Item} x{Amount}")
+            print("="*30)
+
+            Cont = input("Continue? (Y/N)\n> ").title().strip()
+            if Cont == "N":
+                Attempts = False 
+                for item in Reels: 
+                    Inventory[item] = (Reels.get(item)) 
+
+def Mining (Time): 
+    Tools = [
+            "Wooden Pickaxe",
+            "Stone Pickaxe",
+            "Copper Pickaxe",
+            "Iron Pickaxe",
+            "Steel Pickaxe",
+            "Diamond Pickaxe",
+        ]
+    
+    Enemies = [
+        "Copper Veinling", 
+        "Iron Veinling",
+        "Steel Veinling", 
+        "Diamond Veinling", 
+        "Coal Veinling", 
+    ]
+
+    while True: 
+        EActions = []
+        EHealth = []
+        Loot = {}
+        PvE = True
+        Options = Search(Inventory, Tools)
+        if Options == []: 
+            print("No Mining Tool Present.")
+            continue
+
+        print("Select a Tool:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        Pickaxe = input("> ").title().strip()
+        if Pickaxe == "Exit":
+            return
+        
+        if Pickaxe not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+
+
+        # Stats: 
+        Data = Assets[Pickaxe]
+        PHealth = 100
+        PStrength = 1 + Data["Strength"]
+        PDefense = 0
+
+        Efficiency = Data["Mining Efficiency"]
+        ActionType = Data["Action Type"]
+        
+        Veinling = random.choice(Enemies)
+        Data = Assets[Veinling]
+        Grouping = Data["Grouping"]
+        VAmount = random.randint(Grouping[0], Grouping[1])
+        # VAmount = 10 
+        SetAmt = VAmount
+        ETurn = VAmount
+
+        while ETurn: 
+            EHealth.append(10)
+            ETurn -= 1
+            #print("DEBUG | Setting HP")
+        
+        EStrength = Data["Strength"]
+        EDefense = Data["Defense"]
+        
+        while PvE:
+            # Player's Turn.
+            print("=" * 30)
+            
+            ETurn = VAmount
+            
+            while ETurn > 0:
+                EActions.append(random.choice(["Attack", "Attack", "Attack", "Attack", "Block"]))
+                # print("DEBUG | Action Selection")
+                # print(f"| EACtions[{ETurn-1}]: {EActions[(ETurn-2)]}")
+                ETurn -= 1
+                
+            n = (VAmount -1)
+            PAction = input("Select an Action:\n| Attack [Main Action] \n| Block [Side Action] \n| Flee [Main] \n| Exit\n> ").title().strip()
+            print("=" * 30)
+
+            match (PAction): 
+                case ("Attack"): 
+                    ETurn = VAmount
+                    print("Select an Enemy: (Number)")
+                    
+                    i = SetAmt -1
+                    while i >= 0:
+                        if EHealth[i] <= 0:
+                            print(f"{Veinling} [{i}] (Dead) | {EHealth[i]}")
+                            #EHealth[i] = 0
+                            pass
+                        else: 
+                            print(f"{Veinling} [{i}]")
+                        ETurn -= 1
+                        i -= 1
+                    #print(f"DEBUG | V AMT\n| VAMT = {VAmount}")
+                    
+                    E = int(input("-" * 30 + "\n> "))
+                    if E > (SetAmt-1): 
+                        print("Enemy not Available.\n")
+                        continue
+                    if EHealth[E] <= 0:
+                        print("Enemy not Available.\n")
+                        continue
+
+                    Damage = max(PStrength - EDefense, 0)
+                    if EActions[E] == "Block": Damage /= 2
+                    EHealth[E] -= Damage
+                    if EHealth[E] < 0: EHealth[E] = 0
+
+                    print("-" * 30 +f"\nYou attack {Veinling} [{E}]! ({EHealth[E]})")
+                    #print(f"DEBUG | Damage Dealt: {max(PStrength - EDefense, 0)}")
+                
+                case ("Block"):
+                    if EActions[n] == "Attack":
+                        print("You block all incoming attacks! (-50% Damage)")
+                        PHealth -= (max((EStrength - PDefense) / 2, 0))
+                    else: 
+                        print("You ready yourself for a block, but nothing happens.\n| Enemy didnt attack.")
+                case ("Flee"): 
+                    print("You attempt to Flee...")
+                    Roll = random.randint(1,2)
+                    if Roll == 1: 
+                        print("| You Succeed!")
+                        PvE = False
+                        return
+                    else:
+                        print("| You Fail.")
+                case ("Exit"): 
+                    print("Ending Combat...")
+                    PvE = False 
+                    return
+                case _:
+                    print("Unknown Input. Try again.")
+                    continue
+            
+            # Enemy Turn
+            ETurn = (SetAmt -1)
+            VAmount = SetAmt
+            
+            while ETurn >= 0:
+                if EHealth[n] <= 0: 
+                    VAmount -= 1
+                    #print(f"DEBUG | VAMT2\n| EHealth[{n}] = {EHealth[n]}\n| VAMT = {VAmount}")
+                    # Recieve Drops
+                    if EHealth[n] == 0:
+                        print(f"> {Veinling}[{n}] Defeated!")
+                        for Item in Data["Drops"]:
+                            Amount = random.randint(Data["Drops"][Item][0], Data["Drops"][Item][1])
+                            Loot[Item] = Loot.get(Item, 0) + Amount
+                            print(f"| +{Amount}x {Item}")
+                        EHealth[n] -= 1
+                
+                elif EHealth[n] > 0:
+                    match (EActions[n]): 
+                        case ("Attack"): 
+                            Damage = max(EStrength - PDefense, 0)
+                            if PAction == "Block": Damage /= 2
+                            PHealth -= Damage
+                            print(f"> {Veinling} [{n}] Attacks you for {max(EStrength - PDefense, 0)} Damage!\n| HP: {PHealth}")
+                        case ("Block"):
+                            print(f"> {Veinling} [{n}] blocks all incoming attacks! (-50% Damage)")
+                
+                else: 
+                    print(f"Error | n = {n}")
+                    pass
+                     
+                ETurn -= 1
+                n -= 1
+                EHealth[n] = int(EHealth[n])
+
+            if PHealth <= 0: 
+                print("=" * 30)
+                print("> You Die!\n")
+                Loot = []
+                PvE = False 
+                pass 
+            elif VAmount == 0:
+                print("=" * 30)
+                print("> You Win!")
+                PvE = False 
+                # Drops Recap 
+                for Item in Loot:
+                    print(f"| +{Loot[Item]}x {Item}")
+                    Inventory[Item] = Inventory.get(Item, 0) + Loot[Item]
+                print()
+                pass 
+
+def DisplayInventory(Inventory):
+    InventoryList = []
+    n = 1
+    for item in Inventory:
+        InventoryList.append(item) 
+
+    print("=" * 30)
+    for item in InventoryList:
+        print(f"{n:2d} | {Inventory[item]}x {item} ")
+        n += 1
+    return print("=" * 30)
+
+def Menu(Time):
+    while True:
+        Mode = input("Select an Action:\n| Inventory\n| Fishing\n| Mining\n| Skills\n> ").title().strip()
+
+        match Mode: 
+            case ("Inventory"): 
+                DisplayInventory(Inventory)
+            case ("Fishing"): 
+                Fishing(Time)
+            case ("Mining"): 
+                Mining(Time) 
+            case ("Skills"): 
+                XPConversion("Skill", "Display")
+        
+            case _:
+                continue 
+
+def DisplayTime(Time):
+    while Time[1] > 36: 
+        Time[1] -= 36
+        Time[0] += 1
+    print(f"[D{Time[0]}] | [T{int(Time[1])}]")
+
+def Combat(): 
+    while True:
+        print()
+        # Structure = Player | Main Action + Side Action --> Enemies | Main Action + Side Action
+        Damage = 100
+        Defense = 0 
+        Armor = 0 
+        FinalDamage = round((Damage - Defense) * (1-(Armor / (Armor+20))))
+        print(f"Damage Taken = {FinalDamage}")
+        return
+
+
+#Fishing(Time)
+#Mining(Time)
+
+
+
+
+# Result = Search(Skills, ["Fishing", "Roll"]) 
+# n = 0
+# for item in Result: 
+#     print(f"{n}. {item}")
+#     n += 1
+
+
+Combat()
+#Menu(Time) 
+# XPConversion("Skill", "Testing")
