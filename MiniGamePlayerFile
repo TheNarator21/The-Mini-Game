@@ -1,3 +1,7 @@
+# Example of what the Player File Section looks like
+# Do not use this inside of the Terminal - this is essentially at the top of the Main File
+# It is simply here for better visualization (& bc Github is not allowing me to delete it from the project...) 
+
 Inventories = {
     "Playername": { # [Amount, Durability]
         "Beginners Rod": [1, 60], 
