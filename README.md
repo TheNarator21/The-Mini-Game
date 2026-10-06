@@ -16,3 +16,7 @@ To stay safe, I recommend copy/pasting everything in the Main File into a Python
 -  XP Requirements and Gained amount are currently lower than they are in the Live Game. 
 -  The XP Required is marginally smaller, in the interest of using a similar but much more simplified formula. 
 -    The XP Gained is smaller due to being simple placeholder numbers. 
+
+3 | Combat. 
+- Combat in this version only supports [Attack, Block, Dodge, Flee] as the Main Actions.
+- On top of this, it displays the Enemy HP beside it, when fought. 
