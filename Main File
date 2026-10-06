@@ -1,10 +1,38 @@
 import random
-import MiniGamePlayerFile
 import math
 
-Inventory = MiniGamePlayerFile.Inventories
-Skills = MiniGamePlayerFile.Skills
-Stats = MiniGamePlayerFile.Stats
+Inventories = {
+    "Playername": { # [Amount, Durability]
+        "Beginners Rod": [1, 60], 
+        "Stone Pickaxe": [1, 60],
+        "Stone Dagger": [1, 60],
+        "Stone Hoe": [1, 60],
+        
+        "Leather Helmet": [1, 50],
+        "Leather Chestplate": [1, 50],
+        "Leather Leggings": [1, 50],
+        "Leather Boots": [1, 50],
+        "Mud Guppy" :[1, -1],
+    }
+}
+
+Skills = {
+    "Playername": {
+        "Skill": [0, -50], # Level is automatically calculated per instance. Starting XP needs to be manually set before running.
+        "Fishing": [0, 50],
+        "Farming": [0, -50],
+        "Roll": [0,-50],
+        "Endurance": [0, -50],
+    },
+}
+
+Stats = {
+    "Playername": {
+        "Health": 100, 
+        "Speed": 1,
+        "Defense": 0,
+    }
+}
 
 Time = [0, 0] # Day, Tick
 
@@ -21,7 +49,7 @@ Assets = {
         "Stone Pickaxe": {
             "Strength": 2,
             "Mining Speed": 1, 
-            "Mining Efficiency": 2,
+            "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
             "Action Type": ["Main"], 
         },
 
@@ -34,7 +62,7 @@ Assets = {
         "Stone Hoe": {
         "Strength": 0,
         "Harvesting Speed": 2,
-        "Farming Efficiency": 2,
+        "Farming Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
         "Action Type": ["Main"], 
         },
 
@@ -78,7 +106,7 @@ Assets = {
             "Strength": 1, 
             "Defense": 1, 
             "Speed": 1,
-            "Skills": {"Harden": 1,},
+            "Skills": {"Harden": 1,}, # [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
             "Drops": {},
             "Grouping": [0, 0],
         },
@@ -87,7 +115,7 @@ Assets = {
             "Strength": 1, 
             "Defense": 1, 
             "Speed": 5,
-            "Skills": {"Harden": 2,},
+            "Skills": {"Harden": 2,}, # If the Harden Value > Pickaxe Efficiency, the Veinling cannot be damaged.
             "Drops": {
                 "Stone Chunk": [2, 5],
                 "Iron Chunk": [1, 3],
@@ -111,7 +139,7 @@ Assets = {
             "Defense": 1, 
             "Speed": 3,
             "Skills": {
-                "Harden": 1, # If the Harden Value > Pickaxe Efficiency, the Veinling cannot be damaged.
+                "Harden": 1, 
             },
             "Drops": {
                 "Stone Chunk": [2, 5],
@@ -144,7 +172,7 @@ Assets = {
 
 def PlayerVerification(Inventory):
     while True:
-        print("\nSelect a Player's Inventory to View:")
+        print("\nSelect a Player's File to View:")
         for E in Inventory: 
             print(f"| {E}")
         Player = input("> ").title().strip()
@@ -161,7 +189,7 @@ def PlayerVerification(Inventory):
 def XPConversion(SkillName, Type, Player):
     while True:
         if Player == "None":
-            Player = PlayerVerification(Inventory)
+            Player = PlayerVerification(Inventories)
         
         L = 0
         XPRequired = 0
@@ -241,7 +269,8 @@ def XPConversion(SkillName, Type, Player):
 def Search(Type, Search, Player): # Type = Inventory / Skills
     Result = []
     if Player == "None":
-        Player = PlayerVerification(Inventory)
+        Player = PlayerVerification(Inventories)
+    elif Player == "Exit": return
     
     for item in Type[Player]:    
         if item in Search:
@@ -272,7 +301,9 @@ def Fishing(Time):
 
     while True:
         # Fishing Skill Check
-        Player = PlayerVerification(Inventory)
+        Player = PlayerVerification(Inventories)
+        if Player == "Exit":
+            return
         SkillCheck = Search(Skills, "Fishing", Player)
         SkillList = Skills[Player]
         
@@ -280,12 +311,14 @@ def Fishing(Time):
         
         if SkillCheck == []:
             SkillList["Fishing"] = [0, -50]
+            # Ex = Skills["Fishing"]
+            # print(f"Fishing Lv.{Ex[0]} [{Ex[1]}xp]")
         
         SkillList["Fishing"][0] = XPConversion("Fishing", "Proficiency", Player)
         Strength = SkillList["Fishing"][0]
 
         # Fishing Rod Check
-        Options = Search(Inventory, FishingRods, Player)
+        Options = Search(Inventories, FishingRods, Player)
         if Options == []: 
             print("No Rod Present.")
             return
@@ -413,8 +446,7 @@ def Fishing(Time):
             if Cont == "N":
                 Attempts = False 
                 for item in Reels: 
-                    Inventory[Player][item] = (Reels.get(item)) 
-
+                    Inventories[Player][item] = (Reels.get(item)) 
 
 def Mining (Time): 
     Tools = [
@@ -440,8 +472,9 @@ def Mining (Time):
         EHealth = []
         Loot = {}
         PvE = True
-        Player = PlayerVerification(Inventory)
-        Options = Search(Inventory, Tools, Player)
+        Player = PlayerVerification(Inventories)
+        if Player == "Exit": return
+        Options = Search(Inventories, Tools, Player)
         if Options == []: 
             print("No Mining Tool Present.")
             continue
@@ -629,7 +662,7 @@ def Mining (Time):
                 # Drops Recap 
                 for Item in Loot:
                     print(f"| +{Loot[Item]}x {Item}")
-                    Inventory[Item] = Inventory.get(Item, 0) + Loot[Item]
+                    Inventories[Item] = Inventories.get(Item, 0) + Loot[Item]
                 pass 
 
 def DisplayInventory(Inventory):
@@ -664,7 +697,7 @@ def Menu(Time):
 
         match Mode: 
             case ("Inventory"): 
-                DisplayInventory(Inventory)
+                DisplayInventory(Inventories)
             case ("Fishing"): 
                 Fishing(Time)
             case ("Mining"): 
@@ -675,8 +708,14 @@ def Menu(Time):
                 DisplayTime(Time)
             case ("Exit"):
                 print("\nHave a good day!\n| Exiting...")
-        
+                return
             case _:
                 continue 
 
-Menu(Time)
+def DisplayTime(Time):
+    while Time[1] > 36: 
+        Time[1] -= 36
+        Time[0] += 1
+    print(f"[D{Time[0]}] | [T{int(Time[1])}]")
+
+Menu(Time) 
