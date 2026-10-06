@@ -1,5 +1,7 @@
 import random
 import MiniGamePlayerFile
+import math
+
 Inventory = MiniGamePlayerFile.Inventories
 Skills = MiniGamePlayerFile.Skills
 Stats = MiniGamePlayerFile.Stats
@@ -413,6 +415,7 @@ def Fishing(Time):
                 for item in Reels: 
                     Inventory[Player][item] = (Reels.get(item)) 
 
+
 def Mining (Time): 
     Tools = [
         "Wooden Pickaxe",
@@ -432,6 +435,7 @@ def Mining (Time):
     ]
 
     while True: 
+        Turns = 0
         EActions = []
         EHealth = []
         Loot = {}
@@ -500,6 +504,7 @@ def Mining (Time):
                 
             n = (VAmount -1)
             PAction = input("Select an Action:\n| Attack\n| Block\n| Dodge\n| Flee\n| Exit\n> ").title().strip()
+            Turns += 1
             print("=" * 30)
 
             match (PAction): 
@@ -554,7 +559,9 @@ def Mining (Time):
                     Roll = random.randint(1,100)
 
                     if Roll >= FleeSuccess: 
+                        Time[1] += math.ceil(Turns/5)
                         print(f"| You Succeed! ({Roll})")
+                        
                         if PAction == "Flee":
                             PvE = False
                             return
@@ -615,6 +622,7 @@ def Mining (Time):
                 PvE = False 
                 pass 
             elif VAmount == 0:
+                Time[1] += math.ceil(Turns/5)
                 print("=" * 30)
                 print("> You Win!")
                 PvE = False 
@@ -622,7 +630,6 @@ def Mining (Time):
                 for Item in Loot:
                     print(f"| +{Loot[Item]}x {Item}")
                     Inventory[Item] = Inventory.get(Item, 0) + Loot[Item]
-                print()
                 pass 
 
 def DisplayInventory(Inventory):
@@ -653,7 +660,7 @@ def DisplayInventory(Inventory):
 
 def Menu(Time):
     while True:
-        Mode = input("\nSelect an Action:\n| Inventory\n| Fishing\n| Mining\n| Skills\n> ").title().strip()
+        Mode = input("\nSelect an Action:\n| Inventory\n| Fishing\n| Mining\n| Skills\n| Time\n> ").title().strip()
 
         match Mode: 
             case ("Inventory"): 
@@ -664,14 +671,12 @@ def Menu(Time):
                 Mining(Time) 
             case ("Skills"): 
                 XPConversion("Skill", "Display", "None")
+            case ("Time"): 
+                DisplayTime(Time)
+            case ("Exit"):
+                print("\nHave a good day!\n| Exiting...")
         
             case _:
                 continue 
-
-def DisplayTime(Time):
-    while Time[1] > 36: 
-        Time[1] -= 36
-        Time[0] += 1
-    print(f"[D{Time[0]}] | [T{int(Time[1])}]")
 
 Menu(Time)
