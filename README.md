@@ -19,4 +19,5 @@ To stay safe, I recommend copy/pasting everything in the Main File into a Python
 
 3 | Combat. 
 - Combat in this version only supports [Attack, Block, Dodge, Flee] as the Main Actions.
-- On top of this, it displays the Enemy HP beside it, when fought. 
+- On top of this, it displays the Enemy HP beside it, when fought.
+- There is also no [Armor] Value. Bc of this, Starting HP is set to 100. 
