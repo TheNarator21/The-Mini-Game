@@ -358,7 +358,11 @@ def Fishing(Time):
                 Cont = input("> Reel")
                 print(f"You Reel in a {Catch}!")
                 print(f"DEBUG | Roll = {Roll}")
-                Reels[Catch] = (Reels.get(Catch, 0) + 1)
+                
+                if Catch in Reels:
+                    Reels[Catch][0] += 1
+                else: 
+                    Reels[Catch] = [1, -1]
                 continue
 
             elif Roll <= TChance + JChance: 
@@ -372,7 +376,10 @@ def Fishing(Time):
                 Cont = input("> Reel")
                 print(f"You Reel in a {Catch}!")
                 print(f"DEBUG | Roll = {Roll}")
-                Reels[Catch] = (Reels.get(Catch, 0) + 1)
+                if Catch in Reels:
+                    Reels[Catch][0] += 1
+                else: 
+                    Reels[Catch] = [1, -1]
                 continue
 
             else: 
@@ -411,10 +418,15 @@ def Fishing(Time):
                     if Roll > (101 - SuccessChance): 
                         Catch = Condition + Catch
                         print(f"You Reel in a {Catch}!")
-                        print(f"DEBUG | Roll = {Roll}")
-                        
-                        Reels[Catch] = (Reels.get(Catch, 0) + 1)
+                        # print(f"DEBUG | Roll = {Roll}")
+
+                        if Catch in Reels:
+                            Reels[Catch][0] += 1
+                        else: 
+                            Reels[Catch] = [1, -1]
                         Fishing = False
+                        # print(f"DEBUG | {Reels[Catch]}: {Reels[Catch][0]}")
+                        
                         
                         XP = 1 
                         SkillList["Fishing"][1] += XP
@@ -438,7 +450,8 @@ def Fishing(Time):
             print("Catches:")
                   
             for Item in Reels:
-                Amount = Reels[Item]
+                #print(f"===> DEBUG | {Reels[Item][0]}")
+                Amount = Reels[Item][0]
                 print(f"| {Item} x{Amount}")
             print("="*30)
 
@@ -671,6 +684,7 @@ def DisplayInventory(Inventory):
         for E in Inventory: 
             print(f"| {E}")
         Player = input("> ").title().strip()
+        if Player == "Exit": return
         if Player not in Inventory:
             print("Unknown Player. Try Again.")
             continue
@@ -683,6 +697,7 @@ def DisplayInventory(Inventory):
 
         print("=" * 30)
         for item in InventoryList:
+            #print(f"DEBUG |{item} {Inventory[item]}\n\n")
             if Inventory[item][1] >= 0:
                 Durability = f"({Inventory[item][1]})"
             else: 
