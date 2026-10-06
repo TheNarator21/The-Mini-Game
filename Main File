@@ -1,5 +1,6 @@
 import random
 import math
+Time = [0, 0] # Day, Tick
 
 Inventories = {
     "Playername": { # [Amount, Durability]
@@ -34,7 +35,6 @@ Stats = {
     }
 }
 
-Time = [0, 0] # Day, Tick
 
 Assets = {
     # Tools: 
