@@ -13,6 +13,7 @@ To stay safe, I recommend copy/pasting everything in the Main File into a Python
 1 | Fishing.
 -  Fishing currently is a build more meant for Single-Player usage & not RP Usage. 
 -  This Style of doing things is currently being Tested for compatibility with Discord-Style RP.
+-  Durability is *minorly* at play, with it only affecting Fishing ATM. 
 
 2 | XP.
 -  XP Requirements and Gained amount are currently lower than they are in the Live Game. 
@@ -21,5 +22,5 @@ To stay safe, I recommend copy/pasting everything in the Main File into a Python
 
 3 | Combat. 
 - Combat in this version only supports [Attack, Block, Dodge, Flee] as the Main Actions.
-- On top of this, it displays the Enemy HP beside it, when fought.
-- There is also no [Armor] Value. Bc of this, Starting HP is set to 100. 
+- On top of this, it displays the exact %HP beside it, when fought.
+- There is also no [Armor] Value. Bc of this, starting HP is generously set to 100.  
