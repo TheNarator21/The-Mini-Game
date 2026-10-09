@@ -3,8 +3,8 @@
 # It is simply here for better visualization (& bc Github is not allowing me to delete it from the project...) 
 
 Inventories = {
-    "Playername": { # [Amount, Durability]
-        "Beginners Rod": [1, 60], 
+    "Playername": { < You can change the "Player" to your own name - just remember to do it in all 3 fields listed here. 
+        "Beginners Rod": [1, 60],    < [1] Represents the Amount, [60] is its durability. 
         "Stone Pickaxe": [1, 60],
         "Stone Dagger": [1, 60],
         "Stone Hoe": [1, 60],
