@@ -24,7 +24,7 @@ Inventories = {
 Skills = {
     "Player": {
         "Skill": [0, -50], # Level is automatically calculated per instance. Starting XP needs to be manually set before running.
-        "Fishing": [0, 50],
+        "Fishing": [0, -50],
         "Farming": [0, -50],
         "Roll": [0,-50],
         "Endurance": [0, -50],
