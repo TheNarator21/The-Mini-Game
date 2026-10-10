@@ -13,12 +13,12 @@ To stay safe, I recommend copy/pasting everything in the Main File into a Python
 1 | Fishing.
 -  Fishing currently is a build more meant for Single-Player usage & not RP Usage. 
 -  This Style of doing things is currently being Tested for compatibility with Discord-Style RP.
--  Durability is *minorly* at play, with it only affecting Fishing ATM. 
+-  Durability is *minorly* at play, with it only affecting Fishing and Felling ATM. 
 
 2 | XP.
 -  XP Requirements and Gained amount are currently lower than they are in the Live Game. 
 -  The XP Required is marginally smaller, in the interest of using a similar but much more simplified formula. 
--    The XP Gained is smaller due to being simple placeholder numbers. 
+-    The XP Gained is smaller due to being simple placeholder numbers. XP only seen with Fishing ATM.  
 
 3 | Combat. 
 - Combat in this version only supports [Attack, Block, Dodge, Flee] as the Main Actions.
