@@ -560,16 +560,27 @@ Recipes = {
     },
     
     "Copper Sword": {
-            "1": {
-                "Materials": {
-                    "Copper Ingot": 2, 
-                    "Wooden Rod": 1,
-                },
-                
-                "Amount": 1, 
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
             },
+            
+            "Amount": 1, 
         },
-    
+    },
+
+    "Iron Sword": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+        
     "Steel Sword": {
             "1": {
                 "Materials": {
@@ -625,7 +636,18 @@ Recipes = {
                 "Amount": 1, 
             },
         },
-    
+
+    "Iron Dagger": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
     "Steel Dagger": {
             "1": {
                 "Materials": {
@@ -682,6 +704,17 @@ Recipes = {
             },
         },
     
+    "Iron Axe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+
     "Steel Axe": {
             "1": {
                 "Materials": {
@@ -738,6 +771,17 @@ Recipes = {
             },
         },
     
+    "Iron Hoe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
     "Steel Hoe": {
             "1": {
                 "Materials": {
@@ -776,6 +820,17 @@ Recipes = {
         "1": {
             "Materials": {
                 "Stone Chunk": 3, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+
+    "Iron Pickaxe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
                 "Wooden Rod": 1,
             },
             
@@ -826,6 +881,11 @@ def Crafting():
         Item = input("\nEnter name of the Item you wish to craft.\n> ").title().strip()
         
         if Item == "Exit": return 
+        elif Item == "List": 
+            for x in Recipes: 
+                print(f"| {x}")
+            continue 
+        
         elif Item not in Recipes:
             print("Unknown Recipe.")
             continue  
@@ -1239,13 +1299,13 @@ def Fishing(Time):
 
             Cont = input("Continue? (Y/N)\n> ").title().strip()
             if Cont == "N":
-                Attempts = False 
                 for item in Reels: 
                     if item in Inventories[Player]:
                         Inventories[Player][item][0] += Reels[Item][0]
                     else: 
                         Durability = Assets[item]["Durability"]
                         Inventories[Player][item] = [Reels[Item][0], Durability] 
+                return 
 
 def Mining(Time): 
     Tools = [
@@ -1532,6 +1592,7 @@ def Farming(Time):
 
         Loot = {}
         PvE = True
+        EDodge = False 
         
         # 1 | Player Data
         if len(Inventories) == 1:
@@ -1875,7 +1936,7 @@ def Felling():
                 continue 
                   
             
-            Wood = input("Select a Tree to Fell:\n| Apple [Charges]\n| Birch [Charges]\n| Oak [Charges]\n> ").title().strip()
+            Wood = input("Select a Tree to Fell:\n| Birch [8 Charges]\n| Apple [10 Charges]\n| Oak [12 Charges]\n> ").title().strip()
             if Wood == "Exit": 
                 return 
             if Wood not in Trees:
@@ -1887,7 +1948,7 @@ def Felling():
             except ValueError:
                 print("Unknown Seleciton. Try using a Whole Number!") 
                 continue 
-                
+
 
             match Wood: 
                 case "Apple": 
@@ -2077,25 +2138,35 @@ def Locations():
             case "Apple Grove": 
                 Felling() 
             
-            case "Wheat Barn": 
-                print("You walk up to the Wheat Barn, seeing a Farmer and 2 cows.")
-                CurrentTime = (Time[0] * 36) + Time[1]
-                if CurrentTime >= HarvestedTime +6: 
-                    Wheat = 5 * WheatPlants 
-                Mode = input("\nSelect an Action:\n| Harvest (Manual)\n| Encounters (Combat)\n> ").title().strip()
-                match Mode: 
-                    case "Encounter" | "Encounters" | "Combat": 
-                        Farming(Time)
-                    case "Harvest" | "Manual": 
-                        HarvestedTime = CurrentTime
-                        Time[1] += WheatPlants / 2
-                        DisplayTime(Time) 
-                        print(f"You harvest the Available Wheat.\n| +{Wheat} Wheat")
-                        if "Wheat" in Inventories[Player]: 
-                            Inventories[Player]["Wheat"][0] += Wheat
-                        else: 
-                            Inventories[Player]["Wheat"] = [Wheat, -1]
-                        Wheat = 0 
+            case "Wheat Barn":
+                Barn = True  
+                while Barn:
+                    print("You walk up to the Wheat Barn, seeing a Farmer and 2 cows.")
+                    CurrentTime = (Time[0] * 36) + Time[1]
+                    if CurrentTime >= HarvestedTime +6: 
+                        Wheat = 5 * WheatPlants 
+                    Mode = input("\nSelect an Action:\n| Harvest (Manual)\n| Encounters (Combat)\n> ").title().strip()
+                    
+                    if Mode == "Exit": 
+                        Barn = False 
+                        continue
+                    
+                    match Mode: 
+                        case "Encounter" | "Encounters" | "Combat": 
+                            Farming(Time)
+                        case "Harvest" | "Manual": 
+                            HarvestedTime = CurrentTime
+                            Time[1] += WheatPlants / 2
+                            DisplayTime(Time) 
+                            print(f"You harvest the Available Wheat.\n| +{Wheat} Wheat")
+                            if "Wheat" in Inventories[Player]: 
+                                Inventories[Player]["Wheat"][0] += Wheat
+                            else: 
+                                Inventories[Player]["Wheat"] = [Wheat, -1]
+                            Wheat = 0 
+                        case _: 
+                            print("Unknown Response. Try again!")
+                            continue
 
             case "Inventory": 
                 DisplayInventory(Inventories)
