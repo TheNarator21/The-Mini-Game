@@ -15,9 +15,6 @@ Inventories = {
         "Leather Chestplate": [1, 50],
         "Leather Leggings": [1, 50],
         "Leather Boots": [1, 50],
-        "Mud Guppy" :[1, -1],
-        "Wooden Rod": [1, -1],
-        "String": [12, -1],
     },
 }
 
