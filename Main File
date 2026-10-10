@@ -15,6 +15,9 @@ Inventories = {
         "Leather Chestplate": [1, 50],
         "Leather Leggings": [1, 50],
         "Leather Boots": [1, 50],
+        "Mud Guppy" :[1, -1],
+        "Wooden Rod": [1, -1],
+        "String": [12, -1],
     },
 }
 
@@ -1143,7 +1146,7 @@ def Fishing(Time):
 
                 Cont = input("> Reel")
                 print(f"You Reel in a {Catch}!")
-                print(f"DEBUG | Roll = {Roll}")
+                # print(f"DEBUG | Roll = {Roll}")
                 
                 if Catch in Reels:
                     Reels[Catch][0] += 1
@@ -1172,7 +1175,7 @@ def Fishing(Time):
 
                 Cont = input("> Reel")
                 print(f"You Reel in a {Catch}!")
-                print(f"DEBUG | Roll = {Roll}")
+                # print(f"DEBUG | Roll = {Roll}")
                 if Catch in Reels:
                     Reels[Catch][0] += 1
                 else: 
@@ -1392,7 +1395,7 @@ def Mining(Time):
         while ETurn: 
             EHealth[ETurn] = 10 
             ETurn -= 1
-            #print("DEBUG | Setting HP")
+            # print("DEBUG | Setting HP")
 
         # ETurn = SetAmt
         # while ETurn: 
@@ -2177,15 +2180,4 @@ def Locations():
 
             case _ : print("Unknown Selection. Try Again.") 
 
-# Crafting()
-# Menu(Time) 
-# Mining(Time)
 Locations()
-# Felling()
-
-
-# TO DO: Felling + Farming 
-# Farming: 
-# Add Upgrades - such as allowing for them to add Plots to increase the amount of gotten Wheat
-#  
-# 
