@@ -4,17 +4,20 @@ Time = [0, 0] # Day, Tick
 
 Inventories = {
     "Player": { # [Amount, Durability]
+        "Money": [50, -1],
         "Beginners Rod": [1, 100], 
         "Stone Pickaxe": [1, 60],
         "Stone Dagger": [1, 60],
         "Stone Hoe": [1, 60],
+        "Stone Axe": [1, 60],
         
         "Leather Helmet": [1, 50],
         "Leather Chestplate": [1, 50],
         "Leather Leggings": [1, 50],
         "Leather Boots": [1, 50],
         "Mud Guppy" :[1, -1],
-        "Money": [50, -1],
+        "Wooden Rod": [1, -1],
+        "String": [12, -1],
     },
 }
 
@@ -46,6 +49,42 @@ Assets = {
             "Durability": 100,
         },
 
+        "Stone Fishing Rod": {
+            "Strength": 3, 
+            "Reel Time": 0.3,
+            "Treasure Chance": 5,
+            "Junk Chance": 10,
+            "Durability": 100,
+        },
+
+        "Wooden Pickaxe": {
+            "Strength": -1,
+            "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 50,
+        },
+
+        "Wooden Sword": {
+            "Strength": -1,
+            "Durability": 50,
+        },
+        
+        "Wooden Axe": {
+            "Strength": -1,
+            "Durability": 50,
+            "Charges": 4,
+        },
+
+        "Wooden Dagger": {
+            "Strength": -1,
+            "Durability": 50,
+        },
+        
+        "Wooden Hoe": {
+            "Strength": -1,
+            "Farming Efficiency": 1, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 50,
+        },
+
         "Stone Pickaxe": {
             "Strength": 2,
             "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
@@ -55,6 +94,12 @@ Assets = {
         "Stone Sword": {
             "Strength": 5,
             "Durability": 60,
+        },
+        
+        "Stone Axe": {
+            "Strength": 7,
+            "Durability": 60,
+            "Charges": 8,
         },
 
         "Stone Dagger": {
@@ -69,23 +114,29 @@ Assets = {
         },
 
         "Copper Pickaxe": {
-            "Strength": 3,
+            "Strength": 2,
             "Mining Efficiency": 3,
             "Durability": 70,
         },
 
+        "Copper Axe": {
+            "Strength": 7,
+            "Durability": 70,
+            "Charges": 10,
+        },
+
         "Copper Sword": {
-            "Strength": 6,
+            "Strength": 5,
             "Durability": 70,
         },
 
         "Copper Dagger": {
-            "Strength": 4,
+            "Strength": 3,
             "Durability": 70,
         },
         
         "Copper Hoe": {
-            "Strength": 2,
+            "Strength": 1,
             "Farming Efficiency": 3, 
             "Durability": 70,
         },
@@ -94,6 +145,11 @@ Assets = {
             "Strength": 4,
             "Mining Efficiency": 4,
             "Durability": 80,
+        },
+        "Iron Axe": {
+            "Strength": 8,
+            "Durability": 80,
+            "Charges": 12,
         },
 
         "Iron Sword": {
@@ -116,6 +172,12 @@ Assets = {
             "Strength": 6,
             "Mining Efficiency": 5,
             "Durability": 100,
+        },
+
+        "Steel Axe": {
+            "Strength": 10,
+            "Durability": 100,
+            "Charges": 16,
         },
 
         "Steel Sword": {
@@ -143,6 +205,12 @@ Assets = {
         "Diamond Sword": {
             "Strength": 11,
             "Durability": 200,
+        },
+
+        "Diamond Axe": {
+            "Strength": 12,
+            "Durability": 200,
+            "Charges": 18,
         },
 
         "Diamond Dagger": {
@@ -196,6 +264,9 @@ Assets = {
             "Durability": -1,
         }, 
         "Wooden Bowl": {
+            "Durability": -1,
+        }, 
+        "Wooden Plank": {
             "Durability": -1,
         }, 
 
@@ -385,72 +456,366 @@ Assets = {
 
 Recipes = {
     "Item": {
-        "Material": 0,
+        1: {
+            "Materials": {},
+            "Amount": 1, 
+            },
+    },
+
+    # [Misc]
+
+    "Beginners Rod": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Wooden Rod": 2
+            },
+            "Amount": 1, 
+            },
+    },
+
+    "Stone Fishing Rod": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Stone Rod": 2
+            },
+            "Amount": 1, 
+            },
     },
 
     "Wooden Rod": {
-        "Wooden Plank": 2,
-    },
-    
-    # Axes 
-    
-    "Wooden Axe": {
-        "Wooden Rod": 1,
-        "Wooden Plank": 6,
+        1: {
+            "Materials": {
+                "Wooden Plank": 2,
+            },
+            "Amount": 4, 
+            },
     },
 
-    "Stone Axe": {
-        "Wooden Rod": 1,
-        "Stone Chunk": 6,
+    "Stone Rod": {
+        1: {
+            "Materials": {
+                "Stone Chunk": 4,
+            },
+            "Amount": 2, 
+            },
     },
 
-    "Copper Axe": {
-        "Wooden Rod": 1,
-        "Copper Ingot": 6,
+    "Slingshot": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Wooden Rod": 1
+            },
+            "Amount": 1, 
+            },
     },
 
-    "Iron Axe": {
-        "Wooden Rod": 1,
-        "Iron Ingot": 6,
+    "Stone Chunk": {
+        1: {
+            "Materials": {
+                "Pebble": 4,
+            },
+            "Amount": 1, 
+            },
     },
 
-    "Diamond Axe": {
-        "Wooden Rod": 1,
-        "Diamond": 6,
-    },
-
-    # Pickaxes
-
-    "Wooden Pickaxe": {
-        "Wooden Rod": 1,
-        "Wooden Plank": 3,
-    },
-
-    "Stone Pickaxe": {
-        "Wooden Rod": 1,
-        "Stone Chunk": 3,
-    },
-
-    "Copper Pickaxe": {
-        "Wooden Rod": 1,
-        "Copper Ingot": 3,
-    },
-
-    "Iron Pickaxe": {
-        "Wooden Rod": 1,
-        "Iron Ingot": 3,
-    },
-
-    "Diamond Pickaxe": {
-        "Wooden Rod": 1,
-        "Diamond": 3,
+    "Wooden Plank": {
+        "Oak Log": {
+            "Materials": {"Oak Log": 1},
+            "Amount": 4, 
+        },
+        "Birch Log": {
+            "Materials": {"Birch Log": 1},
+            "Amount": 4, 
+        },
+        "Apple Log": {
+            "Materials": {"Apple Log": 1},
+            "Amount": 4, 
+        },
     },
 
     # Swords
+    "Wooden Sword": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Sword": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Sword": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 2, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Sword": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 2, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Sword": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 2, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
 
     # Daggers
+    "Wooden Dagger": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 1, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Dagger": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 1, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Dagger": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Dagger": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Dagger": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
 
-    # [...]
+    # Axes
+    "Wooden Axe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Axe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Axe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Axe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Axe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Hoes: 
+    "Wooden Hoe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 2, 
+                "Wooden Rod": 2,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Hoe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 2, 
+                "Wooden Rod": 2,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Hoe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Hoe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Hoe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Pickaxes
+    "Wooden Pickaxe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 3, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Pickaxe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 3, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
 }
 
 def Crafting(): 
@@ -467,32 +832,56 @@ def Crafting():
         
         Recipe = Recipes[Item]
 
+        if len(Recipe) == 1: 
+            for x in Recipe: 
+                Recipe = Recipe[x]
+        else: 
+            print("Multiple Entries Found. Select one:")
+            for x in Recipe: 
+                print(f"| {x}")
+            Selection = input("> ").title().strip() 
+            if Selection in Recipe: 
+                Recipe = Recipe[Selection] 
+            else: 
+                print("Unknown Selection")
+                continue 
+
         Inventory = Inventories["Player"]
         Craftable = True
 
         Amount = int(input("How many would you like to craft? (Whole number pls)\n> "))
         Amount = abs(Amount) 
 
-        for x in Recipe: 
-            if (x in Inventory) and ((Recipe[x] * Amount) <= Inventory[x][0]):
+        if Amount == 0: 
+            print(f"You Craft 0x {Item}!")
+            continue 
+
+        for x in Recipe["Materials"]: 
+            if (x in Inventory) and ((Recipe["Materials"][x] * Amount) <= Inventory[x][0]):
                 pass
             else: 
-                Craftable = False 
-                print("| Insufficient Materials.")
+                Craftable = False
+                MAmount = Amount * Recipe["Materials"][x] 
+                print(f"| Missing Material: ({MAmount}x {x})")
                 continue 
 
 
         if Craftable:
-            print(f"SUCCESS!\n| +{Amount}x {Item}")
-            for x in Recipe: 
-                print(f"| -{Recipe[x] * Amount}x {x}")
-                Inventory[x][0] -= (Recipe[x] * Amount)
+            MaterialAmt = Recipe["Amount"] 
+            print(f"SUCCESS!\n| +{MaterialAmt * Amount}x {Item}")
+            for x in Recipe["Materials"]:
+                Material = Recipe["Materials"]
+                print(f"| -{Material[x] * Amount}x {x}")
+                Inventory[x][0] -= (Recipe["Materials"][x] * Amount)
 
             if Item in Inventory: 
-                Inventory[Item][0] += Amount
+                Inventory[Item][0] += (Amount * MaterialAmt)
             else: 
-                Durability = Assets[Item]["Durability"]
-                Inventory[Item] = [Amount, Durability]
+                if Item in Assets: 
+                    Durability = Assets[Item]["Durability"]
+                else: 
+                    Durability = -1 
+                Inventory[Item] = [(Amount * Recipe["Amount"]), Durability]
 
             DisplayInventory(Inventories)
 
@@ -616,7 +1005,6 @@ def Search(Type, Search, Player): # Type = Inventory / Skills
 
 def Fishing(Time):
     FishingRods = [
-        "Wooden Fishing Rod",
         "Beginners Rod", 
         "Stone Fishing Rod",
     ]
@@ -854,10 +1242,10 @@ def Fishing(Time):
                 Attempts = False 
                 for item in Reels: 
                     if item in Inventories[Player]:
-                        Inventories[Player][item][0] += (Reels.get(item)) 
+                        Inventories[Player][item][0] += Reels[Item][0]
                     else: 
                         Durability = Assets[item]["Durability"]
-                        Inventories[Player][item] = [(Reels.get(item)), Durability] 
+                        Inventories[Player][item] = [Reels[Item][0], Durability] 
 
 def Mining(Time): 
     Tools = [
@@ -1365,7 +1753,6 @@ def Farming(Time):
                         Inventory[Item] = [Loot[Item], -1]
                 pass 
 
-
 def DisplayInventory(Inventory):
     while True:
         
@@ -1434,7 +1821,133 @@ def DisplayTime(Time):
         Time[0] += 1
     print(f"[D{Time[0]}] | [T{int(Time[1])}]")
 
+def Felling(): 
+    Axes = [
+        "Wooden Axe",
+        "Stone Axe",
+        "Copper Axe",
+        "Iron Axe",
+        "Steel Axe",
+        "Diamond Axe",
+        "Wooden Axe", 
+    ]
+    
+    Trees = [
+        "Apple",
+        "Birch",
+        "Oak"
+    ]
+
+    Loot = {} 
+    
+    while True:
+        # 1 | Player Data
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+        
+        if Player == "Exit": return
+        Options = Search(Inventories, Axes, Player)
+        if Options == []: 
+            print("No Axe Present.")
+            return 
+
+        print("\nSelect a Tool:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        Axe = input("> ").title().strip()
+        if Axe == "Exit":
+            return
+        
+        if Axe not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+        AxeB = True
+
+        while AxeB == True:
+            if Axe not in Inventories[Player]: 
+                # print("No Axe Present.")
+                AxeB = False 
+                continue 
+                  
+            
+            Wood = input("Select a Tree to Fell:\n| Apple [Charges]\n| Birch [Charges]\n| Oak [Charges]\n> ").title().strip()
+            if Wood == "Exit": 
+                return 
+            if Wood not in Trees:
+                print("Unknown Selection. Try Again.")
+                continue
+
+            try: 
+                Amount = abs(int(input("How many would you like to Fell?\n> ")))
+            except ValueError:
+                print("Unknown Seleciton. Try using a Whole Number!") 
+                continue 
+                
+
+            match Wood: 
+                case "Apple": 
+                    ChargesRequired = 10 
+                    Drops = {
+                        "Apple": [0, 2],
+                        "Apple Log": [2, 2]
+                    }
+                case "Birch": 
+                    ChargesRequired = 8 
+                    Drops = {
+                        "Birch Log": [2, 2]
+                    }
+                case "Oak": 
+                    ChargesRequired = 10 
+                    Drops = {
+                        "Oak Log": [4, 4]
+                    }
+                case _: 
+                    print()
+
+            if Amount >= Inventories[Player][Axe][1]: 
+                Amount = Inventories[Player][Axe][1]
+                del(Inventories[Player][Axe]) 
+            else: 
+                Inventories[Player][Axe][1] -= Amount 
+
+            Charges = Assets[Axe]["Charges"] 
+            Ticks = math.ceil((ChargesRequired * Amount) / Charges)
+            Time[1] += Ticks
+
+            DisplayTime(Time)
+            print(f"You Fell {Amount}x {Wood} Trees.")
+            for i in range(Amount):
+                for x in Drops:
+                    Amount = random.randint(Drops[x][0], Drops[x][1]) 
+                    if x in Loot: 
+                        Loot[x][0] += Amount
+                    else: 
+                        Loot[x] = [Amount, -1]
+                i -= 1 
+
+            
+            for x in Loot:
+                Amount = Loot[x][0] 
+                print(f"| +{Amount}x {x}")
+                if x in Inventories[Player]: 
+                    Inventories[Player][x][0] += Amount
+                else: 
+                    Inventories[Player][x] = [Amount, -1]
+
+            if Axe not in Inventories[Player]: 
+                print(f"Your {Axe} Breaks!") 
+                continue  
+
 def Locations(): 
+    WheatPlants = 5
+    Wheat = 50 
+    HarvestedTime = -6
+
     Prices = {
         "Item": 0,
 
@@ -1470,15 +1983,25 @@ def Locations():
         # Wood
         "Apple Log": 5,
         "Birch Log": 5,
-        "Oak Log": 10,
+        "Oak Log": 5,
         "Stick": .05,
+        "Wooden Plank": 1.25,
 
-        # [...] 
+        # Crops 
+        "Wheat": 2,
+        "Apple": 1, 
     }
+    if len(Inventories) == 1:
+        for x in Inventories:
+            Player = x
+    else:
+        Player = PlayerVerification(Inventories)
     
     while True: 
         #print(f"=== {Location} ===")
-        Location = input("\nSelect a Location:\n| Center Market\n| Fishing Pond\n| Coal Mine\n+ Time\n+ Inventory\n > ").title().strip()
+        
+
+        Location = input("\nSelect a Location:\n| Center Market\n| Fishing Pond\n| Coal Mine\n| Apple Grove\n| Wheat Barn\nYou may also try Interactions!\n+ Time\n+ Inventory\n+ Crafting\n > ").title().strip()
         
         match Location: 
             case "Arena": 
@@ -1517,6 +2040,7 @@ def Locations():
                     match Mode: 
                         case "Buying": 
                             if (Cost > Inventory["Money"][0]):
+                                Money = Inventory["Money"][0]
                                 print(f"Insufficient Funds. Try again later! (${Money} / ${Cost})\n")
                                 continue
 
@@ -1540,10 +2064,9 @@ def Locations():
                                 continue
 
                             Inventory["Money"][0] += Cost
+                            Money = Inventory["Money"][0]
                             InvAmt -= Amount
                             print(f"-{Amount}x {Purchase}\n| Money: ${Money} (${Money - Cost} --> ${Money})")
-
-
 
             case "Fishing Pond": 
                 Fishing(Time) 
@@ -1552,10 +2075,27 @@ def Locations():
                 Mining(Time)
             
             case "Apple Grove": 
-                print("Currently UnSupported.")
+                Felling() 
             
             case "Wheat Barn": 
-                Farming(Time)
+                print("You walk up to the Wheat Barn, seeing a Farmer and 2 cows.")
+                CurrentTime = (Time[0] * 36) + Time[1]
+                if CurrentTime >= HarvestedTime +6: 
+                    Wheat = 5 * WheatPlants 
+                Mode = input("\nSelect an Action:\n| Harvest (Manual)\n| Encounters (Combat)\n> ").title().strip()
+                match Mode: 
+                    case "Encounter" | "Encounters" | "Combat": 
+                        Farming(Time)
+                    case "Harvest" | "Manual": 
+                        HarvestedTime = CurrentTime
+                        Time[1] += WheatPlants / 2
+                        DisplayTime(Time) 
+                        print(f"You harvest the Available Wheat.\n| +{Wheat} Wheat")
+                        if "Wheat" in Inventories[Player]: 
+                            Inventories[Player]["Wheat"][0] += Wheat
+                        else: 
+                            Inventories[Player]["Wheat"] = [Wheat, -1]
+                        Wheat = 0 
 
             case "Inventory": 
                 DisplayInventory(Inventories)
@@ -1567,9 +2107,17 @@ def Locations():
 
             case "Exit": return 
 
-
-
-
             case _ : print("Unknown Selection. Try Again.") 
 
+# Crafting()
+# Menu(Time) 
+# Mining(Time)
 Locations()
+# Felling()
+
+
+# TO DO: Felling + Farming 
+# Farming: 
+# Add Upgrades - such as allowing for them to add Plots to increase the amount of gotten Wheat
+#  
+# 
