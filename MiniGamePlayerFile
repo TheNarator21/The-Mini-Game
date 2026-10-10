@@ -1,26 +1,30 @@
-# Example of what the Player File Section looks like
-# Do not use this inside of the Terminal - this is essentially at the top of the Main File
-# It is simply here for better visualization (& bc Github is not allowing me to delete it from the project...) 
+import random
+import math
+Time = [0, 0] # Day, Tick
 
 Inventories = {
-    "Playername": { < You can change the "Player" to your own name - just remember to do it in all 3 fields listed here. 
-        "Beginners Rod": [1, 60],    < [1] Represents the Amount, [60] is its durability. 
+    "Player": { # [Amount, Durability]
+        "Money": [50, -1],
+        "Beginners Rod": [1, 100], 
         "Stone Pickaxe": [1, 60],
         "Stone Dagger": [1, 60],
         "Stone Hoe": [1, 60],
+        "Stone Axe": [1, 60],
         
         "Leather Helmet": [1, 50],
         "Leather Chestplate": [1, 50],
         "Leather Leggings": [1, 50],
         "Leather Boots": [1, 50],
         "Mud Guppy" :[1, -1],
-    }
+        "Wooden Rod": [1, -1],
+        "String": [12, -1],
+    },
 }
 
 Skills = {
-    "Playername": {
+    "Player": {
         "Skill": [0, -50], # Level is automatically calculated per instance. Starting XP needs to be manually set before running.
-        "Fishing": [0, 50],
+        "Fishing": [0, -50],
         "Farming": [0, -50],
         "Roll": [0,-50],
         "Endurance": [0, -50],
@@ -28,11 +32,2163 @@ Skills = {
 }
 
 Stats = {
-    "Playername": {
+    "Player": {
         "Health": 100, 
         "Speed": 1,
         "Defense": 0,
     }
+}
 
+Assets = {
+    # Tools: 
+        "Beginners Rod": {
+            "Strength": 1, 
+            "Reel Time": 0.6,
+            "Treasure Chance": 0 ,
+            "Junk Chance": 10,
+            "Durability": 100,
+        },
+
+        "Stone Fishing Rod": {
+            "Strength": 3, 
+            "Reel Time": 0.3,
+            "Treasure Chance": 5,
+            "Junk Chance": 10,
+            "Durability": 100,
+        },
+
+        "Wooden Pickaxe": {
+            "Strength": -1,
+            "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 50,
+        },
+
+        "Wooden Sword": {
+            "Strength": -1,
+            "Durability": 50,
+        },
+        
+        "Wooden Axe": {
+            "Strength": -1,
+            "Durability": 50,
+            "Charges": 4,
+        },
+
+        "Wooden Dagger": {
+            "Strength": -1,
+            "Durability": 50,
+        },
+        
+        "Wooden Hoe": {
+            "Strength": -1,
+            "Farming Efficiency": 1, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 50,
+        },
+
+        "Stone Pickaxe": {
+            "Strength": 2,
+            "Mining Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 60,
+        },
+
+        "Stone Sword": {
+            "Strength": 5,
+            "Durability": 60,
+        },
+        
+        "Stone Axe": {
+            "Strength": 7,
+            "Durability": 60,
+            "Charges": 8,
+        },
+
+        "Stone Dagger": {
+            "Strength": 3,
+            "Durability": 60,
+        },
+        
+        "Stone Hoe": {
+            "Strength": 1,
+            "Farming Efficiency": 2, # [0] Fist > [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Durability": 60,
+        },
+
+        "Copper Pickaxe": {
+            "Strength": 2,
+            "Mining Efficiency": 3,
+            "Durability": 70,
+        },
+
+        "Copper Axe": {
+            "Strength": 7,
+            "Durability": 70,
+            "Charges": 10,
+        },
+
+        "Copper Sword": {
+            "Strength": 5,
+            "Durability": 70,
+        },
+
+        "Copper Dagger": {
+            "Strength": 3,
+            "Durability": 70,
+        },
+        
+        "Copper Hoe": {
+            "Strength": 1,
+            "Farming Efficiency": 3, 
+            "Durability": 70,
+        },
+
+        "Iron Pickaxe": {
+            "Strength": 4,
+            "Mining Efficiency": 4,
+            "Durability": 80,
+        },
+        "Iron Axe": {
+            "Strength": 8,
+            "Durability": 80,
+            "Charges": 12,
+        },
+
+        "Iron Sword": {
+            "Strength": 7,
+            "Durability": 80,
+        },
+
+        "Iron Dagger": {
+            "Strength": 5,
+            "Durability": 80,
+        },
+        
+        "Iron Hoe": {
+            "Strength": 3,
+            "Farming Efficiency": 4, 
+            "Durability": 80,
+        },
+
+        "Steel Pickaxe": {
+            "Strength": 6,
+            "Mining Efficiency": 5,
+            "Durability": 100,
+        },
+
+        "Steel Axe": {
+            "Strength": 10,
+            "Durability": 100,
+            "Charges": 16,
+        },
+
+        "Steel Sword": {
+            "Strength": 9,
+            "Durability": 100,
+        },
+
+        "Steel Dagger": {
+            "Strength": 7,
+            "Durability": 100,
+        },
+        
+        "Steel Hoe": {
+            "Strength": 5,
+            "Farming Efficiency": 5, 
+            "Durability": 100,
+        },
+
+        "Diamond Pickaxe": {
+            "Strength": 9,
+            "Mining Efficiency": 6,
+            "Durability": 200,
+        },
+
+        "Diamond Sword": {
+            "Strength": 11,
+            "Durability": 200,
+        },
+
+        "Diamond Axe": {
+            "Strength": 12,
+            "Durability": 200,
+            "Charges": 18,
+        },
+
+        "Diamond Dagger": {
+            "Strength": 10,
+            "Durability": 200,
+        },
+        
+        "Diamond Hoe": {
+            "Strength": 8,
+            "Farming Efficiency": 6, 
+            "Durability": 200,
+        },
+
+
+        # Ores
+        "Stone Chunk": {
+            "Durability": -1,
+        }, 
+        "Coal Chunk": {
+            "Durability": -1,
+        }, 
+        "Copper Chunk": {
+            "Durability": -1,
+        },  
+        "Iron Chunk": {
+            "Durability": -1,
+        }, 
+
+        # Ingots
+        "Copper Ingot": {
+            "Durability": -1,
+        }, 
+        "Iron Ingot": {
+            "Durability": -1,
+        }, 
+
+        # Wood
+        "Apple Log": {
+            "Durability": -1,
+        }, 
+        "Birch Log": {
+            "Durability": -1,
+        }, 
+        "Oak Log": {
+            "Durability": -1,
+        }, 
+        "Stick": {
+            "Durability": -1,
+        }, 
+        "Wooden Rod": {
+            "Durability": -1,
+        }, 
+        "Wooden Bowl": {
+            "Durability": -1,
+        }, 
+        "Wooden Plank": {
+            "Durability": -1,
+        }, 
+
+    # Fish: 
+        "Fish": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Mud Guppy": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Minnow": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Salmon": {
+            "Strength": 5, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "UnCommon",
+            "Durability": -1,
+        },
+
+        "Damaged Mud Guppy": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Damaged Minnow": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Damaged Salmon": {
+            "Strength": 5, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "UnCommon",
+            "Durability": -1,
+        },
+
+        "Healthy Mud Guppy": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Healthy Minnow": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+        },
+        
+        "Healthy Salmon": {
+            "Strength": 5, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "UnCommon",
+            "Durability": -1,
+        },
+
+    # Veinlings:
+        "Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": {"Harden": 1,}, # [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Drops": {},
+            "Grouping": [0, 0],
+        },
+        
+        "Iron Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 5,
+            "Skills": {"Harden": 2,}, # If the Harden Value > Pickaxe Efficiency, the Veinling cannot be damaged.
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Iron Chunk": [1, 3],
+            },  
+            "Grouping": [2, 8],
+        },
+
+        "Copper Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 3,
+            "Skills": {"Harden": 1,},
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Copper Chunk": [3, 6],},  
+            "Grouping": [2, 6],
+        },
+
+        "Coal Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 3,
+            "Skills": {
+                "Harden": 1, 
+            },
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Coal": [3, 8],},
+            "Grouping": [3, 12],
+        },
+
+        "Steel Veinling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 8,
+            "Skills": {"Harden": 3,},
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Steel Chunk": [1, 2],},  
+            "Grouping": [1, 3],
+        },
+
+        "Diamond Veinling": {
+            "Strength": 1, 
+            "Defense": 1,
+            "Speed": 10,
+            "Skills": {"Harden": 4,},
+            "Drops": {
+                "Stone Chunk": [2, 5],
+                "Diamond": [1, 3],},
+            "Grouping": [1, 2],
+        },
+
+    # Seedlings:
+        "Seedling": {
+            "Strength": 1, 
+            "Defense": 0,
+            "Speed": 1,
+            "Skills": {"": 1,}, # [1] Wood > [2] Stone > [3] Copper > [4] Iron > [5] Steel > [6] Diamond > etc
+            "Drops": {},
+            "Grouping": [0, 0],
+        },
+        
+        "Wheat Seedling": {
+            "Strength": 1, 
+            "Defense": 1, 
+            "Speed": 1,
+            "Skills": { },
+            "Drops": {"Wheat": [2, 5], "Wheat Seeds": [0, 3]},
+            "Grouping": [2, 7],
+        },
+
+    # Misc 
+        "String": {
+            "Durability": -1, 
+        }
+}
+
+Recipes = {
+    "Item": {
+        1: {
+            "Materials": {},
+            "Amount": 1, 
+            },
+    },
+
+    # [Misc]
+
+    "Beginners Rod": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Wooden Rod": 2
+            },
+            "Amount": 1, 
+            },
+    },
+
+    "Stone Fishing Rod": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Stone Rod": 2
+            },
+            "Amount": 1, 
+            },
+    },
+
+    "Wooden Rod": {
+        1: {
+            "Materials": {
+                "Wooden Plank": 2,
+            },
+            "Amount": 4, 
+            },
+    },
+
+    "Stone Rod": {
+        1: {
+            "Materials": {
+                "Stone Chunk": 4,
+            },
+            "Amount": 2, 
+            },
+    },
+
+    "Slingshot": {
+        1: {
+            "Materials": {
+                "String": 3,
+                "Wooden Rod": 1
+            },
+            "Amount": 1, 
+            },
+    },
+
+    "Stone Chunk": {
+        1: {
+            "Materials": {
+                "Pebble": 4,
+            },
+            "Amount": 1, 
+            },
+    },
+
+    "Wooden Plank": {
+        "Oak Log": {
+            "Materials": {"Oak Log": 1},
+            "Amount": 4, 
+        },
+        "Birch Log": {
+            "Materials": {"Birch Log": 1},
+            "Amount": 4, 
+        },
+        "Apple Log": {
+            "Materials": {"Apple Log": 1},
+            "Amount": 4, 
+        },
+    },
+
+    # Swords
+    "Wooden Sword": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Sword": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Sword": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+
+    "Iron Sword": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+        
+    "Steel Sword": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 2, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Sword": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 2, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Daggers
+    "Wooden Dagger": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 1, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Dagger": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 1, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Dagger": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    "Iron Dagger": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    "Steel Dagger": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Dagger": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 1, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Axes
+    "Wooden Axe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Axe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Axe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Iron Axe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 6, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+
+    "Steel Axe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Axe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 6, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Hoes: 
+    "Wooden Hoe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 2, 
+                "Wooden Rod": 2,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Hoe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 2, 
+                "Wooden Rod": 2,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Hoe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Iron Hoe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Steel Hoe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Hoe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 2, 
+                    "Wooden Rod": 2,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+
+    # Pickaxes
+    "Wooden Pickaxe": {
+        "1": {
+            "Materials": {
+                "Wooden Plank": 3, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Stone Pickaxe": {
+        "1": {
+            "Materials": {
+                "Stone Chunk": 3, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+
+    "Iron Pickaxe": {
+        "1": {
+            "Materials": {
+                "Copper Ingot": 2, 
+                "Wooden Rod": 1,
+            },
+            
+            "Amount": 1, 
+        },
+    },
+    
+    "Copper Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Copper Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Steel Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Steel Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
+    
+    "Diamond Pickaxe": {
+            "1": {
+                "Materials": {
+                    "Diamond Ingot": 3, 
+                    "Wooden Rod": 1,
+                },
+                
+                "Amount": 1, 
+            },
+        },
 
 }
+
+def Crafting(): 
+    DisplayInventory(Inventories)
+    while True: 
+        
+        Craftable = True 
+        Item = input("\nEnter name of the Item you wish to craft.\n> ").title().strip()
+        
+        if Item == "Exit": return 
+        elif Item == "List": 
+            for x in Recipes: 
+                print(f"| {x}")
+            continue 
+        
+        elif Item not in Recipes:
+            print("Unknown Recipe.")
+            continue  
+        
+        Recipe = Recipes[Item]
+
+        if len(Recipe) == 1: 
+            for x in Recipe: 
+                Recipe = Recipe[x]
+        else: 
+            print("Multiple Entries Found. Select one:")
+            for x in Recipe: 
+                print(f"| {x}")
+            Selection = input("> ").title().strip() 
+            if Selection in Recipe: 
+                Recipe = Recipe[Selection] 
+            else: 
+                print("Unknown Selection")
+                continue 
+
+        Inventory = Inventories["Player"]
+        Craftable = True
+
+        Amount = int(input("How many would you like to craft? (Whole number pls)\n> "))
+        Amount = abs(Amount) 
+
+        if Amount == 0: 
+            print(f"You Craft 0x {Item}!")
+            continue 
+
+        for x in Recipe["Materials"]: 
+            if (x in Inventory) and ((Recipe["Materials"][x] * Amount) <= Inventory[x][0]):
+                pass
+            else: 
+                Craftable = False
+                MAmount = Amount * Recipe["Materials"][x] 
+                print(f"| Missing Material: ({MAmount}x {x})")
+                continue 
+
+
+        if Craftable:
+            MaterialAmt = Recipe["Amount"] 
+            print(f"SUCCESS!\n| +{MaterialAmt * Amount}x {Item}")
+            for x in Recipe["Materials"]:
+                Material = Recipe["Materials"]
+                print(f"| -{Material[x] * Amount}x {x}")
+                Inventory[x][0] -= (Recipe["Materials"][x] * Amount)
+
+            if Item in Inventory: 
+                Inventory[Item][0] += (Amount * MaterialAmt)
+            else: 
+                if Item in Assets: 
+                    Durability = Assets[Item]["Durability"]
+                else: 
+                    Durability = -1 
+                Inventory[Item] = [(Amount * Recipe["Amount"]), Durability]
+
+            DisplayInventory(Inventories)
+
+def PlayerVerification(Inventory):
+    while True:
+        print("\nSelect a Player's File to View:")
+        for E in Inventory: 
+            print(f"| {E}")
+        Player = input("> ").title().strip()
+        
+        if Player == "Exit":
+            pass
+        elif Player not in Inventory:
+            print("Unknown Player. Try Again.")
+            continue
+
+        return str(Player)
+
+def XPConversion(SkillName, Type, Player):
+    while True:
+        if Player == "None":
+            
+                if len(Inventories) == 1:
+                    for x in Inventories:
+                        Player = x
+                else:
+                    Player = PlayerVerification(Inventories)
+        
+        L = 0
+        XPRequired = 0
+        Skill = Skills[Player][SkillName]
+        XP = Skill[1]
+        match (Type):
+            case "Display": 
+                SkillName = input("Enter Skill Name:\n> ").title().strip()
+                Type = input("Enter Skill Type: (Combat, Magic, Proficiency, etc)\n> ").title().strip()
+                continue 
+            case "Testing":
+                Type = input("Enter Skill Type: (Combat, Magic, Proficiency, etc)\n> ").title().strip() 
+                continue
+
+            case "Combat" | "Physical": # Physical are combat-like, without the Max Cap. Ex: Roll & Endurance.
+                while XPRequired < (Skill[1] + 1):
+                    L += 1
+                    XPRequired += round((L**3 + L**2)/6 + (2*L) +3)
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            
+            case "Magic":
+                while XPRequired < (Skill[1] + 1):
+                    L += 1
+                    XPRequired += .5 * round((L**3 + L**2)/6 + (2*L) +3)
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+
+            case "Production":
+                while XPRequired < (Skill[1] + 1): # +10
+                    L += 1
+                    XPRequired += 10 * L 
+                    print(f"Level = {L}\n| XP Required = {XPRequired}")
+
+            case "Informational":
+                XPRequired = 5
+                while XPRequired < (Skill[1] + 1): # +5
+                    L += 1
+                    XPRequired += 5 * L 
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            
+            case "Social" | "Proficiency":
+                while XPRequired < (Skill[1] + 1): # +20
+                    L += 1
+                    XPRequired += 20 * L 
+                    #print(f"Level = {L}\n| XP Required = {XPRequired}")
+            case _:
+                print("Unknown Typing")
+
+        if L >= 20:
+            if Type in ["Combat"]:
+                print("Max Level!")
+                L = 20
+                XPRequired = 8306
+            elif Type == "Production":
+                print("Max Level!")
+                L = 20
+                XPRequired = 2100
+        
+        if L >= 10:
+            if Type == "Proficiency":
+                print("Max Level!")
+                L = 10
+                XPRequired = 1100
+            elif Type == "Informational":
+                print("Max Level!")
+                L = 20
+                XPRequired = 280
+            elif Type == "Magic": 
+                print(f"Tier = {int(L/10) + 1}")
+            elif Type == "Social":
+                print("Max Level!")
+                L = 10
+                XPRequired = 1100
+
+        print(f"| {SkillName} Lv.{L} [{XP} / {XPRequired}]")
+        return L
+
+def Search(Type, Search, Player): # Type = Inventory / Skills
+    Result = []
+    if Player == "None":
+        
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+
+    elif Player == "Exit": return
+    
+    for item in Type[Player]:    
+        if item in Search:
+            Result.append(item)
+
+    return Result
+
+def Fishing(Time):
+    FishingRods = [
+        "Beginners Rod", 
+        "Stone Fishing Rod",
+    ]
+
+    FishingPool = [
+        "Mud Guppy", "Minnow", "Salmon"
+    ]
+
+    TreasurePool = {
+        "Iron Ingot": 1, 
+        "Iron Nugget": 3,
+    }
+    
+    JunkPool = {
+        "String": 3, 
+        "Wooden Bowl": 2,
+    }
+
+    while True:
+        # Fishing Skill Check
+        
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+        
+        if Player == "Exit":
+            return
+        SkillCheck = Search(Skills, "Fishing", Player)
+        SkillList = Skills[Player]
+        
+        if SkillCheck == []:
+            SkillList["Fishing"] = [0, -50]
+            # Ex = Skills["Fishing"]
+            # print(f"Fishing Lv.{Ex[0]} [{Ex[1]}xp]")
+        
+        SkillList["Fishing"][0] = XPConversion("Fishing", "Proficiency", Player)
+        Strength = SkillList["Fishing"][0]
+
+        # Fishing Rod Check
+        Options = Search(Inventories, FishingRods, Player)
+        if Options == []: 
+            print("No Rod Present.")
+            return
+
+        print("\nSelect a Rod:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        FishingRod = input("> ").title().strip()
+        if FishingRod == "Exit":
+            print("Exiting...")
+            return
+        
+        if FishingRod not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+
+        Attempts = True
+        Data = Assets[FishingRod] 
+
+        TChance = Data["Treasure Chance"]
+        JChance = Data["Junk Chance"]
+
+        Reels = {}
+        while Attempts: 
+            Roll = random.randint(1,100)
+            print("="*30 + "\nSomething catches the line!")
+
+            if Roll <= TChance: 
+                Treasures = []
+
+                for Treasure in TreasurePool:
+                    Treasures.append(Treasure) 
+                Catch = random.choice(Treasures)
+                print("Press [Enter] to Reel it in!")
+
+                Cont = input("> Reel")
+                print(f"You Reel in a {Catch}!")
+                print(f"DEBUG | Roll = {Roll}")
+                
+                if Catch in Reels:
+                    Reels[Catch][0] += 1
+                else: 
+                    Reels[Catch] = [1, -1]
+
+                # Rod Breakage
+                TRod = Inventories[Player][FishingRod]
+                TRod[1] -= 1
+                if TRod[1] == 0: 
+                    TRod[0] -= 1
+                if TRod[0] == 0: 
+                    del(Inventories[Player][FishingRod])
+                    print(f"* Your {FishingRod} has Broken!")
+                    return 
+                
+                continue
+
+            elif Roll <= TChance + JChance: 
+                Junks = []
+
+                for Junk in JunkPool:
+                    Junks.append(Junk) 
+                Catch = random.choice(Junks)
+                print("Press [Enter] to Reel it in!")
+
+                Cont = input("> Reel")
+                print(f"You Reel in a {Catch}!")
+                print(f"DEBUG | Roll = {Roll}")
+                if Catch in Reels:
+                    Reels[Catch][0] += 1
+                else: 
+                    Reels[Catch] = [1, -1]
+
+                # Rod Breakage
+                TRod = Inventories[Player][FishingRod]
+                TRod[1] -= 1
+                if TRod[1] == 0: 
+                    TRod[0] -= 1
+                if TRod[0] == 0: 
+                    del(Inventories[Player][FishingRod])
+                    print(f"* Your {FishingRod} has Broken!")
+                    return 
+                
+                continue
+
+            else: 
+                Strength += Data["Strength"]
+                Fish = []
+                
+                for item in FishingPool:
+                    Fish.append(item) 
+
+                Catch = random.choice(Fish)
+                FishSTR = Assets[Catch]["Strength"]
+                FishingLevel = SkillList["Fishing"]
+                
+                CRoll = random.randint(1, (10 + (5 * int(FishingLevel[0]/5)))) + min(FishingLevel[0], 10)
+                # print(f"DEBUG | Condition Roll = {CRoll}")
+                # print(f"{FishingLevel[0]}, {FishingLevel[1]}")
+                
+                if CRoll <= 10:
+                    Condition = "Damaged "
+                    FishSTR *= .5
+                elif CRoll < 26: 
+                    Condition = ""
+                elif CRoll >= 26: 
+                    Condition = "Healthy "
+                    FishSTR *= 1.5                
+                
+                SuccessChance = int((Strength*100) / (FishSTR + Strength)) # ex: 25% Success [76+]
+                Fishing = True 
+
+                while Fishing: 
+                    print(f"Press [Enter] to Reel it in!\n| %success: {SuccessChance} ({101 - SuccessChance}+)\n" + "-"*30)
+
+                    Cont = input("> Reel")
+
+                    Roll = random.randint(1,100) 
+                    if Roll > (101 - SuccessChance): 
+                        Catch = Condition + Catch
+                        print(f"You Reel in a {Catch}!")
+                        # print(f"DEBUG | Roll = {Roll}")
+
+                        if Catch in Reels:
+                            Reels[Catch][0] += 1
+                        else: 
+                            Reels[Catch] = [1, -1]
+                        Fishing = False
+                        # print(f"DEBUG | {Reels[Catch]}: {Reels[Catch][0]}")
+                        
+                        
+                        XP = 1 
+                        SkillList["Fishing"][1] += XP
+                        XPConversion("Fishing", "Proficiency", Player)
+
+                        # Rod Breakage
+                        TRod = Inventories[Player][FishingRod]
+                        TRod[1] -= 1
+                        if TRod[1] == 0: 
+                            TRod[0] -= 1
+                        if TRod[0] == 0: 
+                            del(Inventories[Player][FishingRod])
+                            print(f"* Your {FishingRod} has Broken!")
+                            
+                            
+                            Time[1] += Data["Reel Time"] * 2
+                
+                            print("="*30)
+                            DisplayTime(Time)
+                            print("Catches:")
+                                    
+                            for Item in Reels:
+                                #print(f"===> DEBUG | {Reels[Item][0]}")
+                                Amount = Reels[Item][0]
+                                print(f"| {Item} x{Amount}")
+                            print("="*30)
+                            
+                            Attempts = False 
+                            for item in Reels: 
+                                if item in Inventories[Player]:
+                                    Inventories[Player][item][0] += Reels[item][0] 
+                                else: 
+                                    Durability = Assets[item]["Durability"]
+                                    Inventories[Player][item] = [Reels[item][0], Durability] 
+                            return 
+
+                        
+                    else: 
+                        if "Struggle" in Assets[Catch]["Skills"]: 
+                            print(f"> It Struggles... ({Roll})")
+                            Roll = random.randint(1,5)
+                            if Roll == 5: 
+                                print("| It Gets away!\n")
+                                Fishing = False 
+                            else:
+                                print("| Nothing Happens.\n")
+                
+            Time[1] += Data["Reel Time"] * 2
+
+            print("="*30)
+            DisplayTime(Time)
+            print("Catches:")
+                  
+            for Item in Reels:
+                #print(f"===> DEBUG | {Reels[Item][0]}")
+                Amount = Reels[Item][0]
+                print(f"| {Item} x{Amount}")
+            print("="*30)
+
+            Cont = input("Continue? (Y/N)\n> ").title().strip()
+            if Cont == "N":
+                for item in Reels: 
+                    if item in Inventories[Player]:
+                        Inventories[Player][item][0] += Reels[Item][0]
+                    else: 
+                        Durability = Assets[item]["Durability"]
+                        Inventories[Player][item] = [Reels[Item][0], Durability] 
+                return 
+
+def Mining(Time): 
+    Tools = [
+        "Wooden Pickaxe",
+        "Stone Pickaxe",
+        "Copper Pickaxe",
+        "Iron Pickaxe",
+        "Steel Pickaxe",
+        "Diamond Pickaxe",
+    ]
+    
+    Enemies = [ 
+        "Coal Veinling", 
+        "Copper Veinling", 
+        "Iron Veinling",
+        "Steel Veinling", 
+        "Diamond Veinling",
+    ]
+
+    # === Example Combat Flow: ===  
+    # 0 | Initialize all necessary Tables / Variables
+    # 1 | Player Data
+    # 2 | Enter Enemy Data [Selection, Health, Enemy Actions, etc]
+    # 3 | Player Turn
+    # 4 | Enemy Turns 
+    # 5 | if all Enemies are dead: You win
+    # 6 | If you are dead: You Lose.
+
+    while True: 
+        # 0 | Initialize all necessary Tables / Variables
+        Turns = 0
+        EHealth = {}
+
+        Loot = {}
+        PvE = True
+        
+        # 1 | Player Data
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+        
+        if Player == "Exit": return
+        Options = Search(Inventories, Tools, Player)
+        if Options == []: 
+            print("No Mining Tool Present.")
+            continue
+
+        print("\nSelect a Tool:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        Pickaxe = input("> ").title().strip()
+        if Pickaxe == "Exit":
+            return
+        
+        if Pickaxe not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+
+
+        # Stats: 
+        WeaponData = Assets[Pickaxe]
+        Efficiency = WeaponData["Mining Efficiency"]
+        PStrength = 1 + WeaponData["Strength"]
+
+        PStats = Stats[Player]
+        PHealth = PStats["Health"]
+        PSpeed = PStats["Speed"]
+        PDefense = PStats["Defense"]
+
+        # 2 | Enter Enemy Data [Selection, Health, Enemy Actions, etc]
+        Veinling = random.choice(Enemies)
+        Data = Assets[Veinling]
+        ESkills = Data["Skills"]
+        Grouping = Data["Grouping"]
+        ESpeed = Data["Speed"]
+        EStrength = Data["Strength"]
+        EDefense = Data["Defense"]
+        
+        # SetAmt = 10
+        SetAmt = random.randint(Grouping[0], Grouping[1])
+        ETurn = SetAmt
+
+        while ETurn: 
+            EHealth[ETurn] = 10 
+            ETurn -= 1
+            #print("DEBUG | Setting HP")
+
+        # ETurn = SetAmt
+        # while ETurn: 
+        #     print(f"{ETurn} | {EHealth[ETurn]} HP")
+        #     ETurn -= 1
+        
+        
+        while PvE:
+            # Player's Turn.
+            print("=" * 30)
+            Dodge = False 
+            Alive = 0 
+            
+            ETurn = SetAmt
+            EActions = []
+            while ETurn > 0:
+                EActions.append(random.choice(["Attack", "Attack", "Attack", "Attack", "Block", "Dodge"]))
+                # print("DEBUG | Action Selection")
+                # print(f"| EACtions[{ETurn-1}]: {EActions[(ETurn-2)]}")
+                ETurn -= 1
+
+            PAction = input("Select an Action:\n| Attack\n| Block\n| Dodge\n| Flee\n| Exit\n> ").title().strip()
+            Turns += 1
+            print("=" * 30)
+
+            # 3 | Player Turn
+            match (PAction): 
+                case ("Attack"): 
+                    ETurn = SetAmt 
+                    print("Select an Enemy: (Number)")
+                    
+                    i = SetAmt
+                    while i > 0:
+                        # print(f"\ni = {i}")
+                        if EHealth[i] <= 0:
+                            print(f"{Veinling} [{i}] (Dead)")
+                            #EHealth[i] = 0
+                            pass
+                        else: 
+                            print(f"{Veinling} [{i}] | {(10 * EHealth[i])}%")
+                        i -= 1
+                    #print(f"DEBUG | V AMT\n| VAMT = {VAmount}")
+                    
+                    try: 
+                        E = int(input("-" * 30 + "\n> "))
+                    except ValueError:
+                        continue 
+
+                    if E > (SetAmt): 
+                        print("Enemy not Available.\n")
+                        continue
+                    if EHealth[E] <= 0:
+                        print("Enemy not Available.\n")
+                        continue
+
+                    Damage = max(PStrength - EDefense, 0)
+                    #print(f"DEBUG | Damage = {Damage}")
+                    if EActions[E-1] == "Block": Damage /= 2
+                    elif EActions[E-1] == "Dodge": 
+                        EDodge = True 
+                        if random.randint(1,100) >= (101 - (ESpeed*100 / (ESpeed + PSpeed))): 
+                            Damage = 0
+                            EDodge = False 
+                    # Veinling Special Skill: [Harden]
+                    if "Harden" in ESkills:
+                        if ESkills["Harden"] > Efficiency: 
+                            Damage = 0
+                            print("The Veinling *Hardens*, becoming too tough for your Pickaxe!")
+                     
+                    EHealth[E] -= Damage
+                    if EHealth[E] < 0: EHealth[E] = 0
+
+                    print("-" * 30 +f"\nYou attack {Veinling} [{E}]! ({10 * EHealth[E]}%)")
+                    #print(f"DEBUG | Damage Dealt: {max(PStrength - EDefense, 0)}")
+                
+                case ("Block"):
+                    if "Attack" in EActions:
+                        print("You block all incoming attacks! (-50% Incomming Damage)")
+            
+                case "Flee" | "Dodge":
+                    FleeSuccess = int(101 - ((100 * PSpeed) / (PSpeed+ESpeed)))
+                    print(f"You attempt to Flee...\n| ({FleeSuccess}+)")
+                    Roll = random.randint(1,100)
+
+                    if Roll >= FleeSuccess: 
+                        Time[1] += math.ceil(Turns/5)
+                        print(f"| You Succeed! ({Roll})")
+                        
+                        if PAction == "Flee":
+                            PvE = False
+                            return
+                        else: 
+                            Dodge = True 
+                            pass
+                    else:
+                        print(f"| You Fail. ({Roll})")
+                case ("Exit"): 
+                    print("Ending Combat...")
+                    PvE = False 
+                    return
+                case _:
+                    print("Unknown Input. Try again.")
+                    continue
+            
+            # 4 | Enemy Turns
+            ETurn = SetAmt
+            
+            while ETurn > 0:
+                if EHealth[ETurn] <= 0:
+                    #print(f"DEBUG | VAMT2\n| EHealth[{n}] = {EHealth[n]}\n| VAMT = {VAmount}")
+                    # Recieve Drops
+                    if EHealth[ETurn] == 0:
+                        print(f"> {Veinling}[{ETurn}] Defeated!")
+                        for Item in Data["Drops"]:
+                            Amount = random.randint(Data["Drops"][Item][0], Data["Drops"][Item][1])
+                            Loot[Item] = Loot.get(Item, 0) + Amount
+                            print(f"| +{Amount}x {Item}")
+                        EHealth[ETurn] -= 1
+                
+                elif EHealth[ETurn] > 0:
+                    Alive += 1
+                    match (EActions[ETurn-1]): 
+                        case ("Attack"): 
+                            Damage = max(EStrength - PDefense, 0)
+                            if PAction == "Block": Damage /= 2
+                            if PAction == "Dodge": 
+                                if Dodge: Damage = 0
+                            PHealth -= Damage
+                            print(f"> {Veinling} [{ETurn}] Attacks you for {max(EStrength - PDefense, 0)} Damage!\n| HP: {PHealth}")
+                        case ("Block"):
+                            print(f"> {Veinling} [{ETurn}] blocks all incoming attacks! (-50% Incomming Damage)")
+                        case ("Dodge"): 
+                            print(f"> {Veinling} [{ETurn}] attempts to dodge all incoming attacks...")
+                            if EDodge:
+                                print("| and Succeeds! (-100% Incomming Damage)")
+                            else: 
+                                print("| and Fails! (-0% Incomming Damage)")
+                
+                else: 
+                    print(f"Error | ETurn = {ETurn}")
+                    pass
+                     
+                EHealth[ETurn] = int(EHealth[ETurn])
+                ETurn -= 1
+
+            if PHealth <= 0: 
+                print("=" * 30)
+                print("> You Die!\n")
+                Loot = []
+                PvE = False 
+                pass 
+            elif Alive == 0: 
+                Inventory = Inventories[Player]
+                Time[1] += math.ceil(Turns/5)
+                print("=" * 30)
+                print("> You Win!")
+                PvE = False 
+                # Drops Recap 
+                for Item in Loot:
+                    print(f"| +{Loot[Item]}x {Item}")
+                    if Item in Inventory:
+                        Inventory[Item][0] += Loot[Item]
+                    else: 
+                        Inventory[Item] = [Loot[Item], -1]
+                pass 
+
+def Farming(Time): 
+    Tools = [
+        "Wooden Hoe",
+        "Stone Hoe",
+        "Copper Hoe",
+        "Iron Hoe",
+        "Steel Hoe",
+        "Diamond Hoe",
+    ]
+    
+    Enemies = [ 
+        "Wheat Seedling",
+    ]
+
+    # === Example Combat Flow: ===  
+    # 0 | Initialize all necessary Tables / Variables
+    # 1 | Player Data
+    # 2 | Enter Enemy Data [Selection, Health, Enemy Actions, etc]
+    # 3 | Player Turn
+    # 4 | Enemy Turns 
+    # 5 | if all Enemies are dead: You win
+    # 6 | If you are dead: You Lose.
+
+    while True: 
+        # 0 | Initialize all necessary Tables / Variables
+        Turns = 0
+        EHealth = {}
+
+        Loot = {}
+        PvE = True
+        EDodge = False 
+        
+        # 1 | Player Data
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+        
+        if Player == "Exit": return
+        Options = Search(Inventories, Tools, Player)
+        if Options == []: 
+            print("No Farming Tool Present.")
+            continue
+
+        print("\nSelect a Tool:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        Hoe = input("> ").title().strip()
+        if Hoe == "Exit":
+            return
+        
+        if Hoe not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+
+
+        # Stats: 
+        WeaponData = Assets[Hoe]
+        Efficiency = WeaponData["Farming Efficiency"]
+        PStrength = 1 + WeaponData["Strength"]
+
+        PStats = Stats[Player]
+        PHealth = PStats["Health"]
+        PSpeed = PStats["Speed"]
+        PDefense = PStats["Defense"]
+
+        # 2 | Enter Enemy Data [Selection, Health, Enemy Actions, etc]
+        Seedling = random.choice(Enemies)
+        Data = Assets[Seedling]
+        ESkills = Data["Skills"]
+        Grouping = Data["Grouping"]
+        ESpeed = Data["Speed"]
+        EStrength = Data["Strength"]
+        EDefense = Data["Defense"]
+        
+        # SetAmt = 10
+        SetAmt = random.randint(Grouping[0], Grouping[1])
+        ETurn = SetAmt
+
+        while ETurn: 
+            EHealth[ETurn] = 10 
+            ETurn -= 1
+            #print("DEBUG | Setting HP")
+
+        # ETurn = SetAmt
+        # while ETurn: 
+        #     print(f"{ETurn} | {EHealth[ETurn]} HP")
+        #     ETurn -= 1
+        
+        
+        while PvE:
+            # Player's Turn.
+            print("=" * 30)
+            Dodge = False 
+            Alive = 0 
+            
+            ETurn = SetAmt
+            EActions = []
+            while ETurn > 0:
+                EActions.append(random.choice(["Attack", "Attack", "Attack", "Attack", "Block", "Dodge"]))
+                # print("DEBUG | Action Selection")
+                # print(f"| EACtions[{ETurn-1}]: {EActions[(ETurn-2)]}")
+                ETurn -= 1
+
+            PAction = input("Select an Action:\n| Attack\n| Block\n| Dodge\n| Flee\n| Exit\n> ").title().strip()
+            Turns += 1
+            print("=" * 30)
+
+            # 3 | Player Turn
+            match (PAction): 
+                case ("Attack"): 
+                    ETurn = SetAmt 
+                    print("Select an Enemy: (Number)")
+                    
+                    i = SetAmt
+                    while i > 0:
+                        # print(f"\ni = {i}")
+                        if EHealth[i] <= 0:
+                            print(f"{Seedling} [{i}] (Dead)")
+                            #EHealth[i] = 0
+                            pass
+                        else: 
+                            print(f"{Seedling} [{i}] | {(10 * EHealth[i])}%")
+                        i -= 1
+                    #print(f"DEBUG | V AMT\n| VAMT = {VAmount}")
+                    
+                    try: 
+                        E = int(input("-" * 30 + "\n> "))
+                    except ValueError:
+                        continue 
+
+                    if E > (SetAmt): 
+                        print("Enemy not Available.\n")
+                        continue
+                    if EHealth[E] <= 0:
+                        print("Enemy not Available.\n")
+                        continue
+
+                    Damage = max(PStrength - EDefense, 0)
+                    #print(f"DEBUG | Damage = {Damage}")
+                    if EActions[E-1] == "Block": Damage /= 2
+                    elif EActions[E-1] == "Dodge": 
+                        EDodge = True 
+                        if random.randint(1,100) >= (101 - (ESpeed*100 / (ESpeed + PSpeed))): 
+                            Damage = 0
+                            EDodge = False 
+                    # Seedling Special Skill: [Harden]
+                    if "Harden" in ESkills:
+                        if ESkills["Harden"] > Efficiency: 
+                            Damage = 0
+                            print("The Seedling *Hardens*, becoming too tough for your Hoe!")
+                     
+                    EHealth[E] -= Damage
+                    if EHealth[E] < 0: EHealth[E] = 0
+
+                    print("-" * 30 +f"\nYou attack {Seedling} [{E}]! ({10 * EHealth[E]}%)")
+                    #print(f"DEBUG | Damage Dealt: {max(PStrength - EDefense, 0)}")
+                
+                case ("Block"):
+                    if "Attack" in EActions:
+                        print("You block all incoming attacks! (-50% Incomming Damage)")
+            
+                case "Flee" | "Dodge":
+                    FleeSuccess = int(101 - ((100 * PSpeed) / (PSpeed+ESpeed)))
+                    print(f"You attempt to Flee...\n| ({FleeSuccess}+)")
+                    Roll = random.randint(1,100)
+
+                    if Roll >= FleeSuccess: 
+                        Time[1] += math.ceil(Turns/5)
+                        print(f"| You Succeed! ({Roll})")
+                        
+                        if PAction == "Flee":
+                            PvE = False
+                            return
+                        else: 
+                            Dodge = True 
+                            pass
+                    else:
+                        print(f"| You Fail. ({Roll})")
+                case ("Exit"): 
+                    print("Ending Combat...")
+                    PvE = False 
+                    return
+                case _:
+                    print("Unknown Input. Try again.")
+                    continue
+            
+            # 4 | Enemy Turns
+            ETurn = SetAmt
+            
+            while ETurn > 0:
+                if EHealth[ETurn] <= 0:
+                    #print(f"DEBUG | VAMT2\n| EHealth[{n}] = {EHealth[n]}\n| VAMT = {VAmount}")
+                    # Recieve Drops
+                    if EHealth[ETurn] == 0:
+                        print(f"> {Seedling}[{ETurn}] Defeated!")
+                        for Item in Data["Drops"]:
+                            Amount = random.randint(Data["Drops"][Item][0], Data["Drops"][Item][1])
+                            Loot[Item] = Loot.get(Item, 0) + Amount
+                            print(f"| +{Amount}x {Item}")
+                        EHealth[ETurn] -= 1
+                
+                elif EHealth[ETurn] > 0:
+                    Alive += 1
+                    match (EActions[ETurn-1]): 
+                        case ("Attack"): 
+                            Damage = max(EStrength - PDefense, 0)
+                            if PAction == "Block": Damage /= 2
+                            if PAction == "Dodge": 
+                                if Dodge: Damage = 0
+                            PHealth -= Damage
+                            print(f"> {Seedling} [{ETurn}] Attacks you for {max(EStrength - PDefense, 0)} Damage!\n| HP: {PHealth}")
+                        case ("Block"):
+                            print(f"> {Seedling} [{ETurn}] blocks all incoming attacks! (-50% Incomming Damage)")
+                        case ("Dodge"): 
+                            print(f"> {Seedling} [{ETurn}] attempts to dodge all incoming attacks...")
+                            if EDodge:
+                                print("| and Succeeds! (-100% Incomming Damage)")
+                            else: 
+                                print("| and Fails! (-0% Incomming Damage)")
+                
+                else: 
+                    print(f"Error | ETurn = {ETurn}")
+                    pass
+                     
+                EHealth[ETurn] = int(EHealth[ETurn])
+                ETurn -= 1
+
+            if PHealth <= 0: 
+                print("=" * 30)
+                print("> You Die!\n")
+                Loot = []
+                PvE = False 
+                pass 
+            elif Alive == 0: 
+                Inventory = Inventories[Player]
+                Time[1] += math.ceil(Turns/5)
+                print("=" * 30)
+                print("> You Win!")
+                PvE = False 
+                # Drops Recap 
+                for Item in Loot:
+                    print(f"| +{Loot[Item]}x {Item}")
+                    if Item in Inventory:
+                        Inventory[Item][0] += Loot[Item]
+                    else: 
+                        Inventory[Item] = [Loot[Item], -1]
+                pass 
+
+def DisplayInventory(Inventory):
+    while True:
+        
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+
+        if Player == "Exit": return
+        if Player not in Inventory:
+            print("Unknown Player. Try Again.")
+            continue
+
+        InventoryList = []
+        Inventory = Inventory[Player]
+        n = 1
+        for item in Inventory:
+            InventoryList.append(item) 
+
+        print("=" * 30)
+        for item in InventoryList:
+            #print(f"DEBUG |{item} {Inventory[item]}\n\n")
+            if Inventory[item][1] >= 0:
+                Durability = f"({Inventory[item][1]})"
+            else: 
+                Durability = ""
+
+            if Inventory[item][1] == 0:
+                Inventory[item][0] -= 1
+
+            #print(f"DEBUG | {Inventory[item][0]}")
+            if (Inventory[item][0] <= 0) and (item != "Money"):
+                del(Inventory[item]) 
+            else: 
+                print(f"{n:2d} | {Inventory[item][0]}x {item} {Durability}")
+                n += 1
+        return print("=" * 30)
+
+def Menu(Time):
+    while True:
+        Mode = input("\nSelect an Action:\n| Inventory\n| Fishing\n| Mining\n| Skills\n| Time\n> ").title().strip()
+
+        match Mode: 
+            case ("Inventory"): 
+                DisplayInventory(Inventories)
+            case ("Fishing"): 
+                Fishing(Time)
+            case ("Mining"): 
+                Mining(Time) 
+            case ("Skills"): 
+                XPConversion("Skill", "Display", "None")
+            case ("Time"): 
+                DisplayTime(Time)
+            case ("Locations"): 
+                Locations()
+            case ("Exit"):
+                print("\nHave a good day!\n| Exiting...")
+                return
+            case _:
+                continue 
+
+def DisplayTime(Time):
+    while Time[1] > 36: 
+        Time[1] -= 36
+        Time[0] += 1
+    print(f"[D{Time[0]}] | [T{int(Time[1])}]")
+
+def Felling(): 
+    Axes = [
+        "Wooden Axe",
+        "Stone Axe",
+        "Copper Axe",
+        "Iron Axe",
+        "Steel Axe",
+        "Diamond Axe",
+        "Wooden Axe", 
+    ]
+    
+    Trees = [
+        "Apple",
+        "Birch",
+        "Oak"
+    ]
+
+    Loot = {} 
+    
+    while True:
+        # 1 | Player Data
+        if len(Inventories) == 1:
+            for x in Inventories:
+                Player = x
+        else:
+            Player = PlayerVerification(Inventories)
+        
+        if Player == "Exit": return
+        Options = Search(Inventories, Axes, Player)
+        if Options == []: 
+            print("No Axe Present.")
+            return 
+
+        print("\nSelect a Tool:")
+        
+        for Item in Options: 
+            print(f"| {Item}")
+
+        Axe = input("> ").title().strip()
+        if Axe == "Exit":
+            return
+        
+        if Axe not in Options: 
+            print("Unknown Selection. Try Again.")
+            continue
+        AxeB = True
+
+        while AxeB == True:
+            if Axe not in Inventories[Player]: 
+                # print("No Axe Present.")
+                AxeB = False 
+                continue 
+                  
+            
+            Wood = input("Select a Tree to Fell:\n| Birch [8 Charges]\n| Apple [10 Charges]\n| Oak [12 Charges]\n> ").title().strip()
+            if Wood == "Exit": 
+                return 
+            if Wood not in Trees:
+                print("Unknown Selection. Try Again.")
+                continue
+
+            try: 
+                Amount = abs(int(input("How many would you like to Fell?\n> ")))
+            except ValueError:
+                print("Unknown Seleciton. Try using a Whole Number!") 
+                continue 
+
+
+            match Wood: 
+                case "Apple": 
+                    ChargesRequired = 10 
+                    Drops = {
+                        "Apple": [0, 2],
+                        "Apple Log": [2, 2]
+                    }
+                case "Birch": 
+                    ChargesRequired = 8 
+                    Drops = {
+                        "Birch Log": [2, 2]
+                    }
+                case "Oak": 
+                    ChargesRequired = 10 
+                    Drops = {
+                        "Oak Log": [4, 4]
+                    }
+                case _: 
+                    print()
+
+            if Amount >= Inventories[Player][Axe][1]: 
+                Amount = Inventories[Player][Axe][1]
+                del(Inventories[Player][Axe]) 
+            else: 
+                Inventories[Player][Axe][1] -= Amount 
+
+            Charges = Assets[Axe]["Charges"] 
+            Ticks = math.ceil((ChargesRequired * Amount) / Charges)
+            Time[1] += Ticks
+
+            DisplayTime(Time)
+            print(f"You Fell {Amount}x {Wood} Trees.")
+            for i in range(Amount):
+                for x in Drops:
+                    Amount = random.randint(Drops[x][0], Drops[x][1]) 
+                    if x in Loot: 
+                        Loot[x][0] += Amount
+                    else: 
+                        Loot[x] = [Amount, -1]
+                i -= 1 
+
+            
+            for x in Loot:
+                Amount = Loot[x][0] 
+                print(f"| +{Amount}x {x}")
+                if x in Inventories[Player]: 
+                    Inventories[Player][x][0] += Amount
+                else: 
+                    Inventories[Player][x] = [Amount, -1]
+
+            if Axe not in Inventories[Player]: 
+                print(f"Your {Axe} Breaks!") 
+                continue  
+
+def Locations(): 
+    WheatPlants = 5
+    Wheat = 50 
+    HarvestedTime = -6
+
+    Prices = {
+        "Item": 0,
+
+        # Fish
+        "String": .75,
+        "Wooden Bowl": .1,
+
+        "Damaged Mud Guppy": 0.5,
+        "Mud Guppy": 1,
+        "Healthy Mud Guppy": 1.5,
+        
+        "Damaged Minnow": 1.5,
+        "Minnow": 3,
+        "Healthy Minnow": 4.5,
+
+        "Damaged Salmon": 2.5,
+        "Salmon": 5,
+        "Healthy Salmon": 7.5,
+
+        # Ores
+        "Stone Chunk": 0.5, 
+        "Coal Chunk": 2, 
+        "Copper Chunk": 2.5, 
+        "Iron Chunk": 5,
+        "Steel Chunk": 25,
+
+        # Ingots
+        "Copper Ingot": 5, 
+        "Iron Ingot": 10,
+        "Steel Ingot": 50, 
+        "Diamond": 100, 
+
+        # Wood
+        "Apple Log": 5,
+        "Birch Log": 5,
+        "Oak Log": 5,
+        "Stick": .05,
+        "Wooden Plank": 1.25,
+
+        # Crops 
+        "Wheat": 2,
+        "Apple": 1, 
+    }
+    if len(Inventories) == 1:
+        for x in Inventories:
+            Player = x
+    else:
+        Player = PlayerVerification(Inventories)
+    
+    while True: 
+        #print(f"=== {Location} ===")
+        
+
+        Location = input("\nSelect a Location:\n| Center Market\n| Fishing Pond\n| Coal Mine\n| Apple Grove\n| Wheat Barn\nYou may also try Interactions!\n+ Time\n+ Inventory\n+ Crafting\n > ").title().strip()
+        
+        match Location: 
+            case "Arena": 
+                print("Surprise! This is unsupported :/")
+
+            case "Center Market": 
+                if len(Inventories) == 1:
+                    for x in Inventories:
+                        Player = x
+                else:
+                    Player = PlayerVerification(Inventories)
+                        
+                Inventory = Inventories[Player]
+                
+                print("\nWelcome to the Center Market! Here's what we have to offer:")
+                for Item in Prices: 
+                    print(f"| {Item}: ${Prices[Item]}")
+                
+                while Location == "Center Market": 
+                    Purchase = input("What would you like?\n> ").title().strip()
+                    if Purchase == "Exit": 
+                        Location = "None"
+                        continue 
+                    elif Purchase not in Prices: 
+                        print("Unknown Selection. Try Again!")
+                        continue
+
+                    try: 
+                        Amount = int(input("How many would you like? (Whole numbers only)\n> "))
+                    except ValueError:
+                        print("That wasn't a whole number...")
+                        continue
+                    Cost = Prices[Purchase] * Amount
+
+                    Mode = input("Are you Buying or Selling?\n> ").title().strip()
+                    match Mode: 
+                        case "Buying": 
+                            if (Cost > Inventory["Money"][0]):
+                                Money = Inventory["Money"][0]
+                                print(f"Insufficient Funds. Try again later! (${Money} / ${Cost})\n")
+                                continue
+
+                            Inventory["Money"][0] -= Cost 
+                            Money = Inventory["Money"][0]
+                            Durability = Assets[Purchase]["Durability"]
+                            print(f"+{Amount}x {Purchase}\n| Money: ${Money} (${Money + Cost} --> ${Money})")
+
+                            if Purchase not in Inventory: 
+                                Inventory[Purchase] = [Amount, Durability] 
+                            else: Inventory[Purchase][0] += Amount 
+                        
+                        case "Selling":
+                            if Purchase not in Inventory: 
+                                print("Item Not Found in Inventory")
+                                continue 
+
+                            InvAmt = Inventory[Purchase][0]
+                            if (InvAmt < Amount):
+                                print(f"Insufficient Item. Try again later! (${InvAmt} / ${Amount})\n")
+                                continue
+
+                            Inventory["Money"][0] += Cost
+                            Money = Inventory["Money"][0]
+                            InvAmt -= Amount
+                            print(f"-{Amount}x {Purchase}\n| Money: ${Money} (${Money - Cost} --> ${Money})")
+
+            case "Fishing Pond": 
+                Fishing(Time) 
+            
+            case "Coal Mine": 
+                Mining(Time)
+            
+            case "Apple Grove": 
+                Felling() 
+            
+            case "Wheat Barn":
+                Barn = True  
+                while Barn:
+                    print("You walk up to the Wheat Barn, seeing a Farmer and 2 cows.")
+                    CurrentTime = (Time[0] * 36) + Time[1]
+                    if CurrentTime >= HarvestedTime +6: 
+                        Wheat = 5 * WheatPlants 
+                    Mode = input("\nSelect an Action:\n| Harvest (Manual)\n| Encounters (Combat)\n> ").title().strip()
+                    
+                    if Mode == "Exit": 
+                        Barn = False 
+                        continue
+                    
+                    match Mode: 
+                        case "Encounter" | "Encounters" | "Combat": 
+                            Farming(Time)
+                        case "Harvest" | "Manual": 
+                            HarvestedTime = CurrentTime
+                            Time[1] += WheatPlants / 2
+                            DisplayTime(Time) 
+                            print(f"You harvest the Available Wheat.\n| +{Wheat} Wheat")
+                            if "Wheat" in Inventories[Player]: 
+                                Inventories[Player]["Wheat"][0] += Wheat
+                            else: 
+                                Inventories[Player]["Wheat"] = [Wheat, -1]
+                            Wheat = 0 
+                        case _: 
+                            print("Unknown Response. Try again!")
+                            continue
+
+            case "Inventory": 
+                DisplayInventory(Inventories)
+
+            case "Time": 
+                DisplayTime(Time) 
+            case "Crafting": 
+                Crafting() 
+
+            case "Exit": return 
+
+            case _ : print("Unknown Selection. Try Again.") 
+
+# Crafting()
+# Menu(Time) 
+# Mining(Time)
+Locations()
+# Felling()
+
+
+# TO DO: Felling + Farming 
+# Farming: 
+# Add Upgrades - such as allowing for them to add Plots to increase the amount of gotten Wheat
+#  
+# 
