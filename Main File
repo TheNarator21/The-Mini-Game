@@ -2,6 +2,27 @@ import random
 import math
 Time = [0, 0] # Day, Tick
 
+FishList = [
+    "Mud Guppy",
+    "Minnow",
+    "Clownfish",
+    "Pufferfish",
+    "Angelfish",
+    "Damselfish",
+    "Coral Wrasses",
+    "Kelp Eel",
+    "Urchins",
+    "Rockfish",
+    "Sheephead",
+    "Giant Sea Bass",
+    "Mountain Goby",
+    "Sockeye Salmon",
+    "Rainbow Trout",
+    "River Serpent",
+    "Great Blue Heron",
+    "Waterfall Drake"
+]
+
 Inventories = {
     "Player": { # [Amount, Durability]
         "Money": [50, -1],
@@ -228,46 +249,69 @@ Assets = {
         # Ores
         "Stone Chunk": {
             "Durability": -1,
+            "Cost":  0.50,
+            
         }, 
         "Coal Chunk": {
             "Durability": -1,
+            "Cost":  2,
         }, 
         "Copper Chunk": {
             "Durability": -1,
+            "Cost":  2.5,
         },  
         "Iron Chunk": {
             "Durability": -1,
+            "Cost":  5,
+        }, 
+        "Steel Chunk": {
+            "Durability": -1,
+            "Cost":  12.5,
         }, 
 
         # Ingots
         "Copper Ingot": {
             "Durability": -1,
+            "Cost":  5,
         }, 
         "Iron Ingot": {
             "Durability": -1,
+            "Cost":  10,
+        }, 
+        "Steel Ingot": {
+            "Durability": -1,
+            "Cost":  25,
         }, 
 
         # Wood
         "Apple Log": {
             "Durability": -1,
+            "Cost":  5,
         }, 
         "Birch Log": {
             "Durability": -1,
+            "Cost":  5,
         }, 
         "Oak Log": {
             "Durability": -1,
+            "Cost":  5,
         }, 
         "Stick": {
             "Durability": -1,
+            "Cost":  .05,
         }, 
+        
         "Wooden Rod": {
             "Durability": -1,
-        }, 
+            "Cost":  .5,
+        },
         "Wooden Bowl": {
             "Durability": -1,
+            "Cost":  .5,
         }, 
         "Wooden Plank": {
             "Durability": -1,
+            "Cost": 1.25,
         }, 
 
     # Fish: 
@@ -278,6 +322,57 @@ Assets = {
             ],
             "Rarity": "Common",
             "Durability": -1,
+            "Cost":  0,
+        },
+
+        "Coral Wrasses": {
+            "Strength": 3, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+            "Cost":  5,
+        },
+
+        "Damselfish": {
+            "Strength": 2,
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+            "Cost":  5,
+        },
+
+        "Angelfish": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+            "Cost":  5,
+        },
+        
+        "Pufferfish": {
+            "Strength": 2, 
+            "Skills": [
+                "Struggle", "Puff"
+            ],
+            "Rarity": "UnCommon",
+            "Durability": -1,
+            "Cost":  5,
+        },
+
+        "Clownfish": {
+            "Strength": 1, 
+            "Skills": [
+                "Struggle"
+            ],
+            "Rarity": "Common",
+            "Durability": -1,
+            "Cost":  10,
         },
         
         "Mud Guppy": {
@@ -287,6 +382,7 @@ Assets = {
             ],
             "Rarity": "Common",
             "Durability": -1,
+            "Cost":  .5,
         },
         
         "Minnow": {
@@ -296,6 +392,7 @@ Assets = {
             ],
             "Rarity": "Common",
             "Durability": -1,
+            "Cost":  .5,
         },
         
         "Salmon": {
@@ -305,60 +402,7 @@ Assets = {
             ],
             "Rarity": "UnCommon",
             "Durability": -1,
-        },
-
-        "Damaged Mud Guppy": {
-            "Strength": 1, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "Common",
-            "Durability": -1,
-        },
-        
-        "Damaged Minnow": {
-            "Strength": 2, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "Common",
-            "Durability": -1,
-        },
-        
-        "Damaged Salmon": {
-            "Strength": 5, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "UnCommon",
-            "Durability": -1,
-        },
-
-        "Healthy Mud Guppy": {
-            "Strength": 1, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "Common",
-            "Durability": -1,
-        },
-        
-        "Healthy Minnow": {
-            "Strength": 2, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "Common",
-            "Durability": -1,
-        },
-        
-        "Healthy Salmon": {
-            "Strength": 5, 
-            "Skills": [
-                "Struggle"
-            ],
-            "Rarity": "UnCommon",
-            "Durability": -1,
+            "Cost":  2.5,
         },
 
     # Veinlings:
@@ -870,7 +914,6 @@ Recipes = {
                 "Amount": 1, 
             },
         },
-
 }
 
 def Crafting(): 
@@ -1069,10 +1112,6 @@ def Fishing(Time):
         "Stone Fishing Rod",
     ]
 
-    FishingPool = [
-        "Mud Guppy", "Minnow", "Salmon"
-    ]
-
     TreasurePool = {
         "Iron Ingot": 1, 
         "Iron Nugget": 3,
@@ -1084,6 +1123,34 @@ def Fishing(Time):
     }
 
     while True:
+
+        # Location Check
+        Location = input("Select a Location:\n| Center Island\n| Warm Ocean\n| Kelp Forest\n| Tidefall\n> ").title().strip() 
+        match Location: 
+            case "Center Island":
+                FishingPool = ["Mud Guppy", "Minnow"]
+            case "Warm Ocean":
+                FishingPool = ["Clownfish", "Pufferfish", "Angelfish", "Damselfish", "Coral Wrasses"]
+            case "Kelp Forest":
+                FishingPool = ["Kelp Eel", "Urchins", "Rockfish", "Sheephead", "Giant Sea Bass"]
+            case "Tidefall":
+                FishingPool = ["Mountain Goby", "Sockeye Salmon", "Rainbow Trout", "River Serpent", "Great Blue Heron", "Waterfall Drake"]
+            case _: 
+                print("Unknown Location. Try Again")
+                continue
+
+        for Fish in FishingPool:
+            Fish2 = "Damaged " + Fish 
+            Assets[Fish2] = Assets[Fish] 
+            Assets[Fish2]["Strength"] /= 2
+            Assets[Fish2]["Cost"] /= 2
+
+        for Fish in FishingPool:
+            Fish2 = "Healthy " + Fish 
+            Assets[Fish2] = Assets[Fish] 
+            Assets[Fish2]["Strength"] *= 1.5
+            Assets[Fish2]["Cost"] *= 1.5
+                
         # Fishing Skill Check
         
         if len(Inventories) == 1:
@@ -2009,49 +2076,6 @@ def Locations():
     Wheat = 50 
     HarvestedTime = -6
 
-    Prices = {
-        "Item": 0,
-
-        # Fish
-        "String": .75,
-        "Wooden Bowl": .1,
-
-        "Damaged Mud Guppy": 0.5,
-        "Mud Guppy": 1,
-        "Healthy Mud Guppy": 1.5,
-        
-        "Damaged Minnow": 1.5,
-        "Minnow": 3,
-        "Healthy Minnow": 4.5,
-
-        "Damaged Salmon": 2.5,
-        "Salmon": 5,
-        "Healthy Salmon": 7.5,
-
-        # Ores
-        "Stone Chunk": 0.5, 
-        "Coal Chunk": 2, 
-        "Copper Chunk": 2.5, 
-        "Iron Chunk": 5,
-        "Steel Chunk": 25,
-
-        # Ingots
-        "Copper Ingot": 5, 
-        "Iron Ingot": 10,
-        "Steel Ingot": 50, 
-        "Diamond": 100, 
-
-        # Wood
-        "Apple Log": 5,
-        "Birch Log": 5,
-        "Oak Log": 5,
-        "Stick": .05,
-        "Wooden Plank": 1.25,
-
-        # Crops 
-        "Wheat": 2,
-        "Apple": 1, 
-    }
     if len(Inventories) == 1:
         for x in Inventories:
             Player = x
@@ -2077,17 +2101,18 @@ def Locations():
                         
                 Inventory = Inventories[Player]
                 
-                print("\nWelcome to the Center Market! Here's what we have to offer:")
-                for Item in Prices: 
-                    print(f"| {Item}: ${Prices[Item]}")
+                print("\nWelcome to the Center Market! We've got Fish, Wood, Ores, and more!")
                 
                 while Location == "Center Market": 
                     Purchase = input("What would you like?\n> ").title().strip()
                     if Purchase == "Exit": 
                         Location = "None"
                         continue 
-                    elif Purchase not in Prices: 
+                    elif Purchase not in Assets: 
                         print("Unknown Selection. Try Again!")
+                        continue
+                    elif "Cost" not in Assets[Purchase]: 
+                        print("Item not for Sale.")
                         continue
 
                     try: 
@@ -2095,7 +2120,7 @@ def Locations():
                     except ValueError:
                         print("That wasn't a whole number...")
                         continue
-                    Cost = Prices[Purchase] * Amount
+                    Cost = Assets[Purchase]["Cost"] * Amount
 
                     Mode = input("Are you Buying or Selling?\n> ").title().strip()
                     match Mode: 
@@ -2180,4 +2205,18 @@ def Locations():
 
             case _ : print("Unknown Selection. Try Again.") 
 
+# Setup: 
+for Fish in FishList:
+    if Fish in Assets:
+        Fish2 = "Damaged " + Fish 
+        Assets[Fish2] = Assets[Fish] 
+        Assets[Fish2]["Strength"] /= 2
+        Assets[Fish2]["Cost"] /= 2
+
+        Fish2 = "Healthy " + Fish 
+        Assets[Fish2] = Assets[Fish] 
+        Assets[Fish2]["Strength"] *= 1.5
+        Assets[Fish2]["Cost"] *= 1.5
+
+# Main Function: 
 Locations()
